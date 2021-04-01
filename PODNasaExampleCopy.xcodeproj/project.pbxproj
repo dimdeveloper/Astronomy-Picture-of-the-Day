@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5231518A2615AF2700316BD6 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */; };
+		5231518D2615C1DE00316BD6 /* SnappingEffectOfImagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231518C2615C1DE00316BD6 /* SnappingEffectOfImagesCollectionView.swift */; };
 		5248EC9326063C400020E8EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248EC9226063C400020E8EF /* AppDelegate.swift */; };
 		5248EC9526063C400020E8EF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248EC9426063C400020E8EF /* SceneDelegate.swift */; };
 		5248EC9A26063C400020E8EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5248EC9826063C400020E8EF /* Main.storyboard */; };
@@ -19,7 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5248EC8F26063C400020E8EF /* PODNasaExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PODNasaExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		5231518C2615C1DE00316BD6 /* SnappingEffectOfImagesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnappingEffectOfImagesCollectionView.swift; sourceTree = "<group>"; };
+		5248EC8F26063C400020E8EF /* PODNasaExampleCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PODNasaExampleCopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5248EC9226063C400020E8EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5248EC9426063C400020E8EF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5248EC9926063C400020E8EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -54,7 +58,7 @@
 		5248EC9026063C400020E8EF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5248EC8F26063C400020E8EF /* PODNasaExample.app */,
+				5248EC8F26063C400020E8EF /* PODNasaExampleCopy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,6 +76,8 @@
 				5248ECB1260642740020E8EF /* PODObject.swift */,
 				5248ECB42606456F0020E8EF /* Requests.swift */,
 				5248ECB7260646CF0020E8EF /* Helpers.swift */,
+				523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */,
+				5231518C2615C1DE00316BD6 /* SnappingEffectOfImagesCollectionView.swift */,
 			);
 			path = PODNasaExample;
 			sourceTree = "<group>";
@@ -79,9 +85,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5248EC8E26063C400020E8EF /* PODNasaExample */ = {
+		5248EC8E26063C400020E8EF /* PODNasaExampleCopy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "PODNasaExample" */;
+			buildConfigurationList = 5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "PODNasaExampleCopy" */;
 			buildPhases = (
 				5248EC8B26063C400020E8EF /* Sources */,
 				5248EC8C26063C400020E8EF /* Frameworks */,
@@ -91,9 +97,9 @@
 			);
 			dependencies = (
 			);
-			name = PODNasaExample;
+			name = PODNasaExampleCopy;
 			productName = PODNasaExample;
-			productReference = 5248EC8F26063C400020E8EF /* PODNasaExample.app */;
+			productReference = 5248EC8F26063C400020E8EF /* PODNasaExampleCopy.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -110,7 +116,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "PODNasaExample" */;
+			buildConfigurationList = 5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "PODNasaExampleCopy" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -123,7 +129,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5248EC8E26063C400020E8EF /* PODNasaExample */,
+				5248EC8E26063C400020E8EF /* PODNasaExampleCopy */,
 			);
 		};
 /* End PBXProject section */
@@ -149,6 +155,8 @@
 				5248ECB2260642740020E8EF /* PODObject.swift in Sources */,
 				5248ECB8260646CF0020E8EF /* Helpers.swift in Sources */,
 				5248EC9326063C400020E8EF /* AppDelegate.swift in Sources */,
+				5231518A2615AF2700316BD6 /* ImageCollectionViewCell.swift in Sources */,
+				5231518D2615C1DE00316BD6 /* SnappingEffectOfImagesCollectionView.swift in Sources */,
 				5248ECAF260641BE0020E8EF /* MainTableViewController.swift in Sources */,
 				5248ECB52606456F0020E8EF /* Requests.swift in Sources */,
 				5248EC9526063C400020E8EF /* SceneDelegate.swift in Sources */,
@@ -334,7 +342,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "PODNasaExample" */ = {
+		5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "PODNasaExampleCopy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5248ECA126063C420020E8EF /* Debug */,
@@ -343,7 +351,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "PODNasaExample" */ = {
+		5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "PODNasaExampleCopy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5248ECA426063C420020E8EF /* Debug */,
