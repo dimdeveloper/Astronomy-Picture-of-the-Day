@@ -1,18 +1,22 @@
 //
-//  SnappingEffectOfImagesCollectionView.swift
+//  SnapingEffectOfImages.swift
 //  PODNasaExampleCopy
 //
 //  Created by TheMacUser on 01.04.2021.
 //
 
 import Foundation
-import UIKit
+import  UIKit
 class SnappingFlowLayout: UICollectionViewFlowLayout {
     static var indexPathOfSnappingImage: IndexPath!
+    private var firstSetupDone = false
     override func prepare() {
         super.prepare()
-        
-           setup()
+        if !firstSetupDone {
+                   setup()
+                    firstSetupDone = true
+                }
+            
       
     }
     
@@ -40,3 +44,4 @@ class SnappingFlowLayout: UICollectionViewFlowLayout {
 //        let collectionVewItems = collectionView.cont
 //    }
 }
+
