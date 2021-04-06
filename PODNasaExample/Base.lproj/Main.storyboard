@@ -26,16 +26,29 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTq-QN-UFj">
-                                                    <rect key="frame" x="20" y="11" width="42" height="22"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Дата" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTq-QN-UFj">
+                                                    <rect key="frame" x="20" y="11" width="38.5" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOB-iL-WZV">
-                                                    <rect key="frame" x="352" y="11" width="42" height="22"/>
+                                                    <rect key="frame" x="333.5" y="11" width="42" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nyr-kh-h2m">
+                                                    <rect key="frame" x="385.5" y="0.0" width="18.5" height="35"/>
+                                                    <attributedString key="attributedText">
+                                                        <fragment content="⌵">
+                                                            <attributes>
+                                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                <font key="NSFont" size="30" name="Menlo-Regular"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -45,7 +58,9 @@
                                                 <constraint firstItem="fTq-QN-UFj" firstAttribute="leading" secondItem="ixG-gb-JNr" secondAttribute="leadingMargin" id="UI1-bv-sbx"/>
                                                 <constraint firstItem="fTq-QN-UFj" firstAttribute="top" secondItem="ixG-gb-JNr" secondAttribute="topMargin" id="b34-h9-7pB"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="aOB-iL-WZV" secondAttribute="bottom" id="fcv-A2-b1z"/>
-                                                <constraint firstItem="aOB-iL-WZV" firstAttribute="trailing" secondItem="ixG-gb-JNr" secondAttribute="trailingMargin" id="hSn-Lb-aSB"/>
+                                                <constraint firstAttribute="bottom" secondItem="nyr-kh-h2m" secondAttribute="bottom" constant="9" id="hI5-Wa-SPO"/>
+                                                <constraint firstAttribute="trailing" secondItem="nyr-kh-h2m" secondAttribute="trailing" constant="10" id="sjc-7k-G5x"/>
+                                                <constraint firstItem="nyr-kh-h2m" firstAttribute="leading" secondItem="aOB-iL-WZV" secondAttribute="trailing" constant="10" id="tQ0-Vo-1gI"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -56,13 +71,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="172"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="d7G-54-Dca">
-                                                    <rect key="frame" x="20" y="11" width="374" height="150"/>
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="d7G-54-Dca">
+                                                    <rect key="frame" x="20" y="11" width="374" height="216"/>
+                                                    <locale key="locale" localeIdentifier="uk_UA"/>
+                                                    <connections>
+                                                        <action selector="datePickerDateChanged:" destination="ctx-6n-Z6y" eventType="valueChanged" id="Dtk-3Z-VTN"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="d7G-54-Dca" secondAttribute="trailing" id="AAb-w5-SYM"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="d7G-54-Dca" secondAttribute="bottom" id="IED-i1-g3b"/>
                                                 <constraint firstItem="d7G-54-Dca" firstAttribute="leading" secondItem="Zgm-NS-PsS" secondAttribute="leadingMargin" id="ebV-TO-lvf"/>
                                                 <constraint firstItem="d7G-54-Dca" firstAttribute="top" secondItem="Zgm-NS-PsS" secondAttribute="topMargin" id="rej-4H-hv2"/>
                                             </constraints>
@@ -176,6 +194,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="chevronLabel" destination="nyr-kh-h2m" id="chN-1d-5fZ"/>
                         <outlet property="dateLabel" destination="aOB-iL-WZV" id="8hL-Ts-kK3"/>
                         <outlet property="datePicker" destination="d7G-54-Dca" id="HWs-z8-Lid"/>
                         <outlet property="imageDescription" destination="ac0-bl-eRw" id="3yD-8a-pRx"/>

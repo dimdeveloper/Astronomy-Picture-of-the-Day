@@ -24,4 +24,10 @@ extension Date {
         }()
         return dateFormatter.string(from: self)
     }
+    func yesterday() -> Date {
+        return Calendar.current.date(byAdding: .day, value: -1, to: self)!
+    }
+    func tomorrow() -> Date {
+        return Calendar.current.date(byAdding: .day, value: 1, to: self)!
+    }
 }
