@@ -26,16 +26,14 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
 //        }
     }
     
-    var chevronRotationAngle: CGFloat = CGFloat.pi
+    var chevronRotationAngle: CGFloat = 0
     var isDatePickerHidden: Bool = true {
         didSet {
-            print("DidSet")
-            print(chevronRotationAngle)
+            chevronRotationAngle = isDatePickerHidden ? CGFloat.pi/2 : -CGFloat.pi/2
             UIView.animate(withDuration: 0.3) {
-                self.chevronLabel.transform = CGAffineTransform(rotationAngle: -(self.chevronRotationAngle))
+                self.chevronLabel.transform = CGAffineTransform(rotationAngle: self.chevronRotationAngle)
                 
             }
-            chevronRotationAngle = -chevronRotationAngle
         }
     }
     var dateArray: [Date] = [] {
@@ -68,7 +66,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             }
         }
     }
-    var indexPathForVisibleCell = IndexPath(row: 9, section: 0)
+    var indexPathForVisibleCell: IndexPath? {
+        let centerX = imagesCollectionView.bounds.midX
+        let centerY = imagesCollectionView.bounds.midY
+        let centerCollectionView = CGPoint(x: centerX, y: centerY)
+        return imagesCollectionView.indexPathForItem(at: centerCollectionView)
+    }
     let indexPathOfDateLabel: IndexPath = IndexPath(row: 0, section: 0)
     let indexPathOfDatePicker: IndexPath = IndexPath(row: 1, section: 0)
     let indexPathOfImage: IndexPath = IndexPath(row: 2, section: 0)
@@ -82,11 +85,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     var currentObject: PODObject!
     override func viewDidLoad() {
         super.viewDidLoad()
+        chevronLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
         datePicker.date = today
         datePicker.maximumDate = today
         print("DatePickerDate on the firstLaunch is \(datePicker.date)")
         initialSetupCollectionView()
-        fetchObject(withDate: today)
+        //fetchObject(withDate: today)
         
    
         
@@ -104,7 +108,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         case indexPathOfDescription:
             return 300
         default:
-            return 44
+            return UITableView.automaticDimension
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -132,7 +136,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         } else {
             cell.imageView.image = imagesDictionary[date] as? UIImage
         }
-        
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -151,6 +154,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             }
         }
     }
+    
     func initialSetupCollectionView(){
         dateArray.removeAll()
         var date: Date!
@@ -188,15 +192,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         imagesCollectionView.setContentOffset(CGPoint(x: imagesCollectionView.collectionViewLayout.collectionViewContentSize.width/itemsCount*4, y: 0), animated: false)
     }
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let centerX = scrollView.bounds.midX
-        let centerY = scrollView.bounds.midY
-        let centerCollectionView = CGPoint(x: centerX, y: centerY)
+        
 //        let visibleCell = imagesCollectionView.visibleCells.first!
 //        indexPathForVisibleCell = imagesCollectionView.indexPath(for: visibleCell)!
-        guard let indexPathForVisibleCell = imagesCollectionView.indexPathForItem(at: centerCollectionView) else {return}
-        currentDate = dateArray[indexPathForVisibleCell.row]
-        print("Date after scrollVDDidEndDecelating is \(dateArray[indexPathForVisibleCell.row])")
-        print("DatepickerDate after scrollVDDidEndDecelating is \(datePicker.date)")
+        guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
+        currentDate = dateArray[indexPathOfVisibleCell.row]
+        print("Width of visibleCell is \(imagesCollectionView.cellForItem(at: indexPathForVisibleCell!)?.frame.width)")
         
         
         //imagesCollectionView.reloadItems(at: [indexPathForVisibleCell])
@@ -212,6 +213,21 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             print("Error retreiving image!")
             return nil}
            return UIImage(data: imageData)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        let offset = imagesCollectionView.contentOffset
+        print(offset)
+        let width = imagesCollectionView.bounds.size.width
+        
+        let index = round(offset.x/width)
+        let newOffset: CGPoint = CGPoint(x: index*size.width, y: offset.y)
+        coordinator.animate { (context) in
+            self.imagesCollectionView.reloadData()
+            self.imagesCollectionView.setContentOffset(newOffset, animated: false)
+        }
+
     }
 
 }
