@@ -192,16 +192,18 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         imagesCollectionView.setContentOffset(CGPoint(x: imagesCollectionView.collectionViewLayout.collectionViewContentSize.width/itemsCount*4, y: 0), animated: false)
     }
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-//        let visibleCell = imagesCollectionView.visibleCells.first!
-//        indexPathForVisibleCell = imagesCollectionView.indexPath(for: visibleCell)!
         guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
         currentDate = dateArray[indexPathOfVisibleCell.row]
-        print("Width of visibleCell is \(imagesCollectionView.cellForItem(at: indexPathForVisibleCell!)?.frame.width)")
-        
-        
-        //imagesCollectionView.reloadItems(at: [indexPathForVisibleCell])
-        print("IndexPath for visibleCell is \(indexPathForVisibleCell)")
+        if indexPathOfVisibleCell.row == 0 {
+            print("Zero")
+            dateArray.insert(yesterday, at: 0)
+            imagesCollectionView.reloadData()
+            let itemSize = CGSize(width: scrollView.bounds.width, height: scrollView.bounds.height)
+            let newOffset: CGPoint = CGPoint(x: itemSize.width, y: 0)
+                self.imagesCollectionView.setContentOffset(newOffset, animated: false)
+            
+            
+        }
     }
     func updateTableView(with object: PODObject){
         imageName.text = object.title
