@@ -20,12 +20,11 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     @IBAction func datePickerDateChanged(_ sender: UIDatePicker) {
         currentDate = datePicker.date
         initialSetupCollectionView()
-        print("DatePickerDate when datePickerIsCanged is \(datePicker.date)")
 //        for cell in imagesCollectionView.visibleCells {
 //            print(imagesCollectionView.indexPath(for: cell))
 //        }
     }
-    
+    var tapGesture = UITapGestureRecognizer()
     var chevronRotationAngle: CGFloat = 0
     var isDatePickerHidden: Bool = true {
         didSet {
@@ -47,7 +46,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     let today = Date()
     var imagesDictionary: [Date : UIImage?] = [:] {
         didSet {
-            print("changed!")
             DispatchQueue.main.async {
                 self.imagesCollectionView.reloadData()
             }
@@ -88,9 +86,8 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         chevronLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
         datePicker.date = today
         datePicker.maximumDate = today
-        print("DatePickerDate on the firstLaunch is \(datePicker.date)")
         initialSetupCollectionView()
-        //fetchObject(withDate: today)
+        fetchObject(withDate: today)
         
    
         
@@ -118,9 +115,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             isDatePickerHidden = !isDatePickerHidden
             tableView.beginUpdates()
             tableView.endUpdates()
-            
         default:
             return
+        }
+        if isDatePickerHidden == false {
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapFunction))
+            view.addGestureRecognizer(tapGesture)
         }
     }
     // collectionView setup
@@ -143,14 +143,16 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         return sizeOfTheCell
     }
     func fetchObject(withDate date: Date){
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         request.fetchNASAPOD(date: date) { object in
-            print("FetchNasaPod for date: \(date)")
             if let object = object {
-                self.imagesDictionary[date] = self.updateImage(imageStringURL: object.imageURL)
-                self.podObjectDictionary[date] = object
                 DispatchQueue.main.async {
                     self.updateTableView(with: object)
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
+                self.imagesDictionary[date] = self.updateImage(imageStringURL: object.imageURL)
+                self.podObjectDictionary[date] = object
+                
             }
         }
     }
@@ -171,16 +173,13 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                 date = date.yesterday()
             }
             date = currentDate.tomorrow()
-            for _ in 0...3 {
+            for _ in 0...4 {
                 if date < today {
                     dateArray.insert(date, at: 0)
                     date = date.tomorrow()
                 }
             }
         }
-        
-        print(dateArray)
-
         imagesCollectionView.reloadData()
         setContentOffset()
 
@@ -194,17 +193,39 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
         currentDate = dateArray[indexPathOfVisibleCell.row]
+        print("IndexPath of visible Cell is \(indexPathOfVisibleCell.row)")
         if indexPathOfVisibleCell.row == 0 {
             print("Zero")
             dateArray.insert(yesterday, at: 0)
             imagesCollectionView.reloadData()
             let itemSize = CGSize(width: scrollView.bounds.width, height: scrollView.bounds.height)
             let newOffset: CGPoint = CGPoint(x: itemSize.width, y: 0)
-                self.imagesCollectionView.setContentOffset(newOffset, animated: false)
-            
+            self.imagesCollectionView.setContentOffset(newOffset, animated: false)
+            if dateArray.count > 10 {
+                dateArray.removeLast()
+                imagesCollectionView.reloadData()
+            }
+        }
+        if indexPathOfVisibleCell.row == 9 && currentDate < today {
+            print("9")
+            dateArray.append(tomorrow)
+            dateArray.removeFirst()
+            imagesCollectionView.reloadData()
+            let itemSize = CGSize(width: scrollView.bounds.width, height: scrollView.bounds.height)
+            let newOffset: CGPoint = CGPoint(x: itemSize.width * 8, y: 0)
+            self.imagesCollectionView.setContentOffset(newOffset, animated: false)
             
         }
+        
     }
+    override func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        if !isDatePickerHidden {
+        isDatePickerHidden = !isDatePickerHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        }
+    }
+
     func updateTableView(with object: PODObject){
         imageName.text = object.title
         imageDescription.text = object.description
@@ -220,7 +241,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         let offset = imagesCollectionView.contentOffset
-        print(offset)
         let width = imagesCollectionView.bounds.size.width
         
         let index = round(offset.x/width)
@@ -230,6 +250,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             self.imagesCollectionView.setContentOffset(newOffset, animated: false)
         }
 
+    }
+    @objc func tapFunction(){
+        isDatePickerHidden = true
+        view.removeGestureRecognizer(tapGesture)
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 
 }
