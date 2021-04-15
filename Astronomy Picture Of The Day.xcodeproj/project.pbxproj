@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,12 +18,14 @@
 		5248ECB2260642740020E8EF /* PODObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248ECB1260642740020E8EF /* PODObject.swift */; };
 		5248ECB52606456F0020E8EF /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248ECB42606456F0020E8EF /* Requests.swift */; };
 		5248ECB8260646CF0020E8EF /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248ECB7260646CF0020E8EF /* Helpers.swift */; };
+		C0A70AC39C0B60AE0F97ECE9 /* Pods_PODNasaExampleCopy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F22CE90FDC42F2E13BF80EAB /* Pods_PODNasaExampleCopy.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A644E0916D9C690D932EE3E /* Pods-PODNasaExampleCopy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PODNasaExampleCopy.debug.xcconfig"; path = "Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy.debug.xcconfig"; sourceTree = "<group>"; };
 		523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		523151902615DE8500316BD6 /* SnapingEffectOfImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapingEffectOfImages.swift; sourceTree = "<group>"; };
-		5248EC8F26063C400020E8EF /* PODNasaExampleCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PODNasaExampleCopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5248EC8F26063C400020E8EF /* Astronomy Picture Of The Day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Astronomy Picture Of The Day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5248EC9226063C400020E8EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5248EC9426063C400020E8EF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5248EC9926063C400020E8EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -34,6 +36,8 @@
 		5248ECB1260642740020E8EF /* PODObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PODObject.swift; sourceTree = "<group>"; };
 		5248ECB42606456F0020E8EF /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		5248ECB7260646CF0020E8EF /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		E37E79090569DAC0A874B76A /* Pods-PODNasaExampleCopy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PODNasaExampleCopy.release.xcconfig"; path = "Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy.release.xcconfig"; sourceTree = "<group>"; };
+		F22CE90FDC42F2E13BF80EAB /* Pods_PODNasaExampleCopy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PODNasaExampleCopy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,24 +45,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0A70AC39C0B60AE0F97ECE9 /* Pods_PODNasaExampleCopy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		13E59833E9025F01D0733655 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F22CE90FDC42F2E13BF80EAB /* Pods_PODNasaExampleCopy.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5248EC8626063C400020E8EF = {
 			isa = PBXGroup;
 			children = (
 				5248EC9126063C400020E8EF /* PODNasaExample */,
 				5248EC9026063C400020E8EF /* Products */,
+				D0158106867E8C25DB1A4858 /* Pods */,
+				13E59833E9025F01D0733655 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		5248EC9026063C400020E8EF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5248EC8F26063C400020E8EF /* PODNasaExampleCopy.app */,
+				5248EC8F26063C400020E8EF /* Astronomy Picture Of The Day.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,24 +97,35 @@
 			path = PODNasaExample;
 			sourceTree = "<group>";
 		};
+		D0158106867E8C25DB1A4858 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1A644E0916D9C690D932EE3E /* Pods-PODNasaExampleCopy.debug.xcconfig */,
+				E37E79090569DAC0A874B76A /* Pods-PODNasaExampleCopy.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5248EC8E26063C400020E8EF /* PODNasaExampleCopy */ = {
+		5248EC8E26063C400020E8EF /* Astronomy Picture Of The Day */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "PODNasaExampleCopy" */;
+			buildConfigurationList = 5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "Astronomy Picture Of The Day" */;
 			buildPhases = (
+				0E54876E02F599AA1E55A995 /* [CP] Check Pods Manifest.lock */,
 				5248EC8B26063C400020E8EF /* Sources */,
 				5248EC8C26063C400020E8EF /* Frameworks */,
 				5248EC8D26063C400020E8EF /* Resources */,
+				6EE43132066E1E6443032372 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = PODNasaExampleCopy;
+			name = "Astronomy Picture Of The Day";
 			productName = PODNasaExample;
-			productReference = 5248EC8F26063C400020E8EF /* PODNasaExampleCopy.app */;
+			productReference = 5248EC8F26063C400020E8EF /* Astronomy Picture Of The Day.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -116,7 +142,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "PODNasaExampleCopy" */;
+			buildConfigurationList = 5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "Astronomy Picture Of The Day" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -129,7 +155,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5248EC8E26063C400020E8EF /* PODNasaExampleCopy */,
+				5248EC8E26063C400020E8EF /* Astronomy Picture Of The Day */,
 			);
 		};
 /* End PBXProject section */
@@ -146,6 +172,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0E54876E02F599AA1E55A995 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PODNasaExampleCopy-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6EE43132066E1E6443032372 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5248EC8B26063C400020E8EF /* Sources */ = {
@@ -303,6 +371,7 @@
 		};
 		5248ECA426063C420020E8EF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A644E0916D9C690D932EE3E /* Pods-PODNasaExampleCopy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -322,6 +391,7 @@
 		};
 		5248ECA526063C420020E8EF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E37E79090569DAC0A874B76A /* Pods-PODNasaExampleCopy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -342,7 +412,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "PODNasaExampleCopy" */ = {
+		5248EC8A26063C400020E8EF /* Build configuration list for PBXProject "Astronomy Picture Of The Day" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5248ECA126063C420020E8EF /* Debug */,
@@ -351,7 +421,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "PODNasaExampleCopy" */ = {
+		5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "Astronomy Picture Of The Day" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5248ECA426063C420020E8EF /* Debug */,

@@ -12,7 +12,6 @@ class SnappingFlowLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
         if !firstSetupDone {
-            print(firstSetupDone)
                    setup()
                    firstSetupDone = true
                 }
@@ -21,18 +20,13 @@ class SnappingFlowLayout: UICollectionViewFlowLayout {
     }
     
     private func setup() {
-        print("FirstSetup!")
         let itemsCount = CGFloat((collectionView?.numberOfItems(inSection: 0))!)
-        print("itemsCount is \(itemsCount)")
         scrollDirection = .horizontal
         itemSize = CGSize(width: collectionView!.bounds.width, height: collectionView!.bounds.height)
-        print("itemsize is \(itemSize)")
         collectionView!.decelerationRate = UIScrollView.DecelerationRate.fast
         guard let collectionView = collectionView else {return}
-        print("There is collectionView!")
-        print(collectionView.numberOfItems(inSection: 0))
         collectionView.setContentOffset(CGPoint(x: collectionView.collectionViewLayout.collectionViewContentSize.width/itemsCount*4, y: 0), animated: false)
-        print(" collectionViewContentSize is \(collectionView.collectionViewLayout.collectionViewContentSize)")
+
         
         
         

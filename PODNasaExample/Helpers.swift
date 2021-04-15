@@ -31,3 +31,24 @@ extension Date {
         return Calendar.current.date(byAdding: .day, value: 1, to: self)!
     }
 }
+extension String {
+    func getVideoID() -> String? {
+        guard let url = self.removingPercentEncoding else { return nil }
+        do {
+            let regex = try NSRegularExpression.init(pattern: "((?<=(v|V)/)|(?<=be/)|(?<=(\\?|\\&)v=)|(?<=embed/))([\\w-]++)", options: .caseInsensitive)
+            let range = NSRange(location: 0, length: url.count)
+            if let matchRange = regex.firstMatch(in: url, options: .reportCompletion, range: range)?.range {
+                let matchLength = (matchRange.lowerBound + matchRange.length) - 1
+                if range.contains(matchRange.lowerBound) &&
+                    range.contains(matchLength) {
+                    let start = url.index(url.startIndex, offsetBy: matchRange.lowerBound)
+                    let end = url.index(url.startIndex, offsetBy: matchLength)
+                    return String(url[start...end])
+                }
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+}
