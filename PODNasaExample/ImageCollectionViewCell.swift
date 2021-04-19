@@ -9,6 +9,6 @@ import UIKit
 import youtube_ios_player_helper
 class ImageCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var ytPlayerView: YTPlayerView?
+    @IBOutlet var ytPlayerView: YTPlayerView?
     @IBOutlet weak var imageView: UIImageView!
 }

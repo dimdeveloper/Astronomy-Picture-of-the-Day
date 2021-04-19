@@ -80,9 +80,54 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     let playVarsDic = ["controls" : 1, "playsinline" : 1, "autohide" : 1, "showinfo" : 1, "autoplay" : 1, "modestbranding" : 1 ]
     var videoPlayerView: YTPlayerView = YTPlayerView()
     var currentObject: PODObject!
+    var hdImageView = UIView()
+    var isHDImageViewHiden: Bool = true {
+        didSet {
+            if isHDImageViewHiden {
+                hdImageView.isHidden = true
+            } else {
+                hdImage.image = imagesDictionary[currentDate] as? UIImage
+                hdImageView.isHidden = false
+                
+            }
+        }
+    }
+    var hdImage = UIImageView()
     override func viewDidLoad() {
         super.viewDidLoad()
-        videoPlayerView.tag = 100
+        tableView.alwaysBounceVertical = false
+        //hdImageView = UIView()
+       //hdImageView = UIView(frame: UIScreen.main.bounds)
+        hdImageView.layer.backgroundColor = (UIColor.black.cgColor)
+        hdImageView.alpha = 1
+        view.addSubview(hdImageView)
+        hdImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hdImageView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            hdImageView.heightAnchor.constraint(equalToConstant: 500),
+            hdImageView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            hdImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            hdImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+            
+        ])
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
+        button.setTitle("Close", for: .normal)
+        button.addTarget(self, action: #selector(closehdImageView), for: .touchUpInside)
+        hdImage = UIImageView(frame: CGRect(x: 0, y: 0, width: self.hdImageView.frame.width, height: hdImageView.frame.height))
+        hdImage.contentMode = .scaleAspectFit
+        hdImageView.addSubview(hdImage)
+        hdImage.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hdImage.widthAnchor.constraint(equalTo: hdImageView.widthAnchor),
+            hdImage.heightAnchor.constraint(equalTo: hdImageView.heightAnchor),
+            hdImage.centerXAnchor.constraint(equalTo: hdImageView.centerXAnchor),
+            hdImage.centerYAnchor.constraint(equalTo: hdImageView.centerYAnchor)
+        ])
+        
+        hdImageView.addSubview(button)
+        hdImageView.isHidden = true
+        videoPlayerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: 350, height: 250))
+        videoPlayerView.load(withVideoId: "")
         videoPlayerView.delegate = self
         chevronLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
         datePicker.date = today
@@ -92,6 +137,14 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         
    
         
+    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        view.bringSubviewToFront(customView)
+//    }
+    @objc func closehdImageView(){
+        isHDImageViewHiden = true
+        tableView.isScrollEnabled = true
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath {
@@ -132,30 +185,42 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
         let date = dateArray[indexPath.row]
         let dayObject = podObjectDictionary[date]
-        for singleView in cell.subviews {
-                    if singleView == videoPlayerView {
-                        singleView.removeFromSuperview()
-                    }
-
-                }
-        print("Cell subviews count is \(cell.subviews.count)")
-        if imagesDictionary[date] == nil {
-            cell.imageView.image = UIImage(named: "imagePlaceholder")
-            if dayObject?.mediaType == "video" {
-                cell.imageView.image = nil
-                print("MediaType is Video in Cell")
-                videoPlayerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-                if let videoID = dayObject!.imageURL.getVideoID() {
-                    cell.addSubview(videoPlayerView)
-                    videoPlayerView.load(withVideoId: videoID, playerVars: playVarsDic)
-                    videoPlayerView.playVideo()
-                }
-            } else {
+        if dayObject?.mediaType == "video" {
+            cell.ytPlayerView?.isHidden = false
+            cell.imageView.isHidden = true
+            if let videoID = dayObject!.imageURL.getVideoID() {
+                print(cell.ytPlayerView)
+                cell.ytPlayerView?.load(withVideoId: videoID, playerVars: playVarsDic)
                 
-            }
-        } else {
-            cell.imageView.image = imagesDictionary[date] as? UIImage
+
         }
+        } else {
+            cell.ytPlayerView?.isHidden = true
+            cell.imageView.isHidden = false
+            cell.imageView.image = (imagesDictionary[date] as? UIImage) ?? UIImage(named: "imagePlaceholder")
+        }
+//        for singleView in cell.subviews {
+//                    if singleView == videoPlayerView {
+//                        singleView.removeFromSuperview()
+//                    }
+//
+//                }
+//        print("Cell subviews count is \(cell.subviews.count)")
+//        if imagesDictionary[date] == nil {
+//            cell.ytPlayerView = nil
+//            cell.imageView.image = UIImage(named: "imagePlaceholder")
+//            if dayObject?.mediaType == "video" {
+//                cell.imageView.image = nil
+//                print("MediaType is Video in Cell")
+//                videoPlayerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
+//                if let videoID = dayObject!.imageURL.getVideoID() {
+//                    cell.addSubview(videoPlayerView)
+//                    videoPlayerView.load(withVideoId: videoID, playerVars: playVarsDic)
+//                }
+//            }
+//        } else {
+//            cell.imageView.image = imagesDictionary[date] as? UIImage
+//        }
         
         
         return cell
@@ -164,6 +229,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let sizeOfTheCell = CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         return sizeOfTheCell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("TAP!")
+        isHDImageViewHiden = false
+        tableView.isScrollEnabled = false
+    
     }
     func fetchObject(withDate date: Date){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -225,7 +296,11 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         currentDate = dateArray[indexPathOfVisibleCell.row]
-        
+        for index in 0...dateArray.count {
+            let indexPath = IndexPath(row: index, section: 0)
+            let cellOfImagesCollectionView = imagesCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
+            cellOfImagesCollectionView?.ytPlayerView?.pauseVideo()
+        }
         if indexPathOfVisibleCell.row == 0 {
             dateArray.insert(yesterday, at: 0)
             imagesCollectionView.reloadData()
@@ -254,6 +329,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         tableView.beginUpdates()
         tableView.endUpdates()
         }
+        
     }
 
     func updateTableView(with object: PODObject){
@@ -288,7 +364,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         tableView.endUpdates()
     }
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
-        videoPlayerView.playVideo()
+        playerView.playVideo()
     }
 
 }

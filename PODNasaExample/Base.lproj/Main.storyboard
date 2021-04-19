@@ -117,17 +117,26 @@
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zYH-NQ-4T3">
                                                                         <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                                     </imageView>
+                                                                    <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="htG-4x-KgQ" customClass="YTPlayerView">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                    </view>
                                                                 </subviews>
                                                                 <constraints>
+                                                                    <constraint firstAttribute="bottom" secondItem="htG-4x-KgQ" secondAttribute="bottom" id="4QU-2i-Bt2"/>
+                                                                    <constraint firstItem="htG-4x-KgQ" firstAttribute="top" secondItem="NEh-Si-WSc" secondAttribute="top" id="7M9-kr-icZ"/>
                                                                     <constraint firstAttribute="bottom" secondItem="zYH-NQ-4T3" secondAttribute="bottom" id="CYk-cV-Cab"/>
                                                                     <constraint firstItem="zYH-NQ-4T3" firstAttribute="leading" secondItem="NEh-Si-WSc" secondAttribute="leading" id="VjU-6R-mG5"/>
                                                                     <constraint firstItem="zYH-NQ-4T3" firstAttribute="top" secondItem="NEh-Si-WSc" secondAttribute="top" id="WVR-7h-Izx"/>
                                                                     <constraint firstAttribute="trailing" secondItem="zYH-NQ-4T3" secondAttribute="trailing" id="fgB-tz-mdg"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="htG-4x-KgQ" secondAttribute="trailing" id="iUE-sO-28R"/>
+                                                                    <constraint firstItem="htG-4x-KgQ" firstAttribute="leading" secondItem="NEh-Si-WSc" secondAttribute="leading" id="oOy-6M-9cM"/>
                                                                 </constraints>
                                                             </collectionViewCellContentView>
                                                             <connections>
                                                                 <outlet property="contentView" destination="NEh-Si-WSc" id="ND0-o0-scZ"/>
                                                                 <outlet property="imageView" destination="zYH-NQ-4T3" id="Yrn-Qx-thK"/>
+                                                                <outlet property="ytPlayerView" destination="htG-4x-KgQ" id="OUk-Be-TMd"/>
                                                             </connections>
                                                         </collectionViewCell>
                                                     </cells>
@@ -197,6 +206,7 @@
                             <outlet property="delegate" destination="ctx-6n-Z6y" id="85T-ca-orj"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="gLZ-R1-BJB"/>
                     <connections>
                         <outlet property="chevronLabel" destination="nyr-kh-h2m" id="chN-1d-5fZ"/>
                         <outlet property="dateLabel" destination="aOB-iL-WZV" id="8hL-Ts-kK3"/>
@@ -207,6 +217,24 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xvm-eF-2zh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="881.15942028985512" y="75"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="9tA-1V-yfd">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xQB-pD-5Bj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nUp-iU-MrQ">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ctx-6n-Z6y" kind="relationship" relationship="rootViewController" id="7cm-pT-uz4"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6W9-1I-jsh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-28.985507246376812" y="75"/>
         </scene>
