@@ -41,7 +41,15 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     let imagesCollectionViewLayout = SnappingFlowLayout()
     let today = Date()
-    var imagesDictionary: [Date : UIImage?] = [:] {
+    var hdImagesDictionary: [Date : UIImage] = [:] {
+        didSet{
+            if !isHDImageViewHiden {
+                hdImage.image = hdImagesDictionary[currentDate]
+                print("HDImage is \(hdImage.image)")
+            }
+        }
+    }
+    var imagesDictionary: [Date : UIImage] = [:] {
         didSet {
             DispatchQueue.main.async {
                 self.imagesCollectionView.reloadData()
@@ -79,15 +87,41 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     let playVarsDic = ["controls" : 1, "playsinline" : 1, "autohide" : 1, "showinfo" : 1, "autoplay" : 1, "modestbranding" : 1 ]
     var videoPlayerView: YTPlayerView = YTPlayerView()
-    var currentObject: PODObject!
+    lazy var currentObject: PODObject = podObjectDictionary[currentDate]!
     var hdImageView = UIView()
     var isHDImageViewHiden: Bool = true {
         didSet {
+            print("isHDImageViewHiden IS CHANGED \(isHDImageViewHiden)")
             if isHDImageViewHiden {
+                print("HDImageView is Hiden")
                 hdImageView.isHidden = true
             } else {
-                hdImage.image = imagesDictionary[currentDate] as? UIImage
+                print("HDImageView is NOT Hiden")
+                
+                if let bigImageSize = hdImagesDictionary[currentDate] {
+                    hdImage.image = bigImageSize
+                } else {
+                    updateHDImage(date: currentDate)
+                    hdImage.image = imagesDictionary[currentDate]
+                }
                 hdImageView.isHidden = false
+                
+//                guard let object = podObjectDictionary[currentDate], let image = imagesDictionary[currentDate] else {return}
+//                if let bigImage = hdImagesDictionary[currentDate] {
+//                        self.hdImage.image = bigImage
+//                        print("hdImage.image = bigImage")
+//
+//                } else {
+//                    DispatchQueue.main.async {
+//                        self.hdImage.image = image
+//                        print("hdImage.image = Image")
+//                    }
+//
+//                    if let bigResolutionImage = updateImage(imageStringURL: object.hdImageURL!) {
+//                        hdImagesDictionary[currentDate] = bigResolutionImage
+//                        print("HD Image is \(bigResolutionImage)")
+//                    }
+//                }
                 
             }
         }
@@ -183,12 +217,14 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
+        cell.isUserInteractionEnabled = true
         let date = dateArray[indexPath.row]
         let dayObject = podObjectDictionary[date]
+        cell.ytPlayerView?.load(withVideoId: "")
         if dayObject?.mediaType == "video" {
             cell.ytPlayerView?.isHidden = false
             cell.imageView.isHidden = true
-            if let videoID = dayObject!.imageURL.getVideoID() {
+            if let videoURL = dayObject!.imageURL, let videoID = videoURL.getVideoID() {
                 print(cell.ytPlayerView)
                 cell.ytPlayerView?.load(withVideoId: videoID, playerVars: playVarsDic)
                 
@@ -197,7 +233,13 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         } else {
             cell.ytPlayerView?.isHidden = true
             cell.imageView.isHidden = false
-            cell.imageView.image = (imagesDictionary[date] as? UIImage) ?? UIImage(named: "imagePlaceholder")
+            if let image = imagesDictionary[date] {
+                cell.imageView.image = image
+            } else {
+                cell.imageView.image = UIImage(named: "imagePlaceholder")
+                cell.isUserInteractionEnabled = false
+            }
+            print(cell.imageView.image)
         }
 //        for singleView in cell.subviews {
 //                    if singleView == videoPlayerView {
@@ -253,7 +295,8 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                         self.imagesCollectionView.reloadData()
                     }
                 } else {
-                    self.imagesDictionary[date] = self.updateImage(imageStringURL: object.imageURL)
+                    print("UpdateImage!")
+                    self.updateImage(date: date)
                 }
             }
         }
@@ -337,13 +380,37 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         imageDescription.text = object.description
         dateLabel.text = datePicker.date.convertToString()
     }
-    func updateImage(imageStringURL: String) -> UIImage? {
-        guard let imageURL = URL(string: imageStringURL), let imageData = try? Data(contentsOf: imageURL) else {
-            print("Error retreiving image!")
-            return nil}
-           return UIImage(data: imageData)
+    func updateImage(date: Date) {
+        guard let currentObjectImage = podObjectDictionary[date], let imageURL = currentObjectImage.imageURL else {return}
+        getImage(from: imageURL) { (image) in
+            if let image = image {
+                print("Image is \(image)")
+                self.imagesDictionary[self.currentDate] = image
+            }
+        }
     }
-
+    func getImage(from urlString: String, completion: @escaping(UIImage?) -> Void){
+        DispatchQueue.global().async {
+            if let imageURL = URL(string: urlString), let imageData = try? Data(contentsOf: imageURL) {
+                completion(UIImage(data: imageData))
+            }
+            else {
+                print("Error retreiving image!")
+            }
+        }
+        
+     
+    }
+    func updateHDImage(date: Date){
+        guard let currentObjectImage = podObjectDictionary[date], let imageHDURL = currentObjectImage.hdImageURL else {return}
+        getImage(from: imageHDURL) { (image) in
+            if let image = image {
+                DispatchQueue.main.async {
+                    self.hdImagesDictionary[date] = image
+                }
+            }
+        }
+    }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         let offset = imagesCollectionView.contentOffset

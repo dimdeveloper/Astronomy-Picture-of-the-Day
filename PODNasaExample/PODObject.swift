@@ -9,7 +9,7 @@ import Foundation
 struct PODObject: Codable {
     var description: String
     var title: String
-    var imageURL: String
+    var imageURL: String?
     var hdImageURL: String?
     var mediaType: String
     
@@ -20,7 +20,7 @@ struct PODObject: Codable {
         case hdImageURL = "hdurl"
         case mediaType = "media_type"
     }
-    init(description: String, title: String, imageURL: String, hdImageURL: String?, mediaType: String){
+    init(description: String, title: String, imageURL: String?, hdImageURL: String?, mediaType: String){
         self.description = description
         self.title = title
         self.imageURL = imageURL
@@ -33,7 +33,7 @@ struct PODObject: Codable {
         let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
         self.description = try valueContainer.decode(String.self, forKey: CodingKeys.description)
         self.title = try valueContainer.decode(String.self, forKey: CodingKeys.title)
-        self.imageURL = try valueContainer.decode(String.self, forKey: CodingKeys.imageURL)
+        self.imageURL = try? valueContainer.decode(String.self, forKey: CodingKeys.imageURL)
         self.hdImageURL = try? valueContainer.decode(String.self, forKey: CodingKeys.hdImageURL)
         self.mediaType = try valueContainer.decode(String.self, forKey: CodingKeys.mediaType)
     }

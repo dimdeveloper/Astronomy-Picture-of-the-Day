@@ -17,6 +17,7 @@ struct Requests {
             "date" : stringDate
         ]
         let requestURL = baseURL.withQueries(query)!
+        print(requestURL)
         let task = URLSession.shared.dataTask(with: requestURL) { (data, responce, error) in
             if let data = data {
                 let jsonDecoder = JSONDecoder()
