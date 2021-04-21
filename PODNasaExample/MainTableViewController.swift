@@ -57,6 +57,9 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             
         }
     }
+    var imageViewScale: CGFloat = 1.0
+    let maxScale: CGFloat = 2.0
+    let minScale: CGFloat = 1.0
     var podObjectDictionary: [Date : PODObject] = [:]
     let request = Requests()
     lazy var currentDate = today {
@@ -159,10 +162,15 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         ])
         
         hdImageView.addSubview(button)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(dragImg(_ :)))
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(sender:)))
+        hdImageView.addGestureRecognizer(panGesture)
+        hdImageView.addGestureRecognizer(pinch)
+        hdImageView.isUserInteractionEnabled = true
         hdImageView.isHidden = true
-        videoPlayerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: 350, height: 250))
-        videoPlayerView.load(withVideoId: "")
-        videoPlayerView.delegate = self
+//        videoPlayerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: 350, height: 250))
+//        videoPlayerView.load(withVideoId: "")
+//        videoPlayerView.delegate = self
         chevronLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
         datePicker.date = today
         datePicker.maximumDate = today
@@ -176,9 +184,28 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
 //        super.viewDidLayoutSubviews()
 //        view.bringSubviewToFront(customView)
 //    }
+    @objc func dragImg(_ sender: UIPanGestureRecognizer){
+        let translation = sender.translation(in: self.view)
+        hdImageView.center = CGPoint(x: hdImageView.center.x + translation.x, y: hdImageView.center.y + translation.y)
+        sender.setTranslation(CGPoint.zero, in: self.view)
+    }
     @objc func closehdImageView(){
         isHDImageViewHiden = true
         tableView.isScrollEnabled = true
+    }
+    @objc func handlePinch(sender: UIPinchGestureRecognizer){
+        guard sender.view != nil else {return}
+        
+        if sender.state == .began || sender.state == .changed {
+            var pinchScale: CGFloat = sender.scale
+
+            if imageViewScale * pinchScale < maxScale && imageViewScale * pinchScale > minScale {
+                imageViewScale *= pinchScale
+                sender.view?.transform = (sender.view?.transform.scaledBy(x: pinchScale, y: pinchScale))!
+            }
+            sender.scale = 1.0
+        }
+        
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath {

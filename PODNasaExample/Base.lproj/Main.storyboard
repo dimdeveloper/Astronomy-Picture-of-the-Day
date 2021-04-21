@@ -122,6 +122,7 @@
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                     </view>
                                                                 </subviews>
+                                                                <gestureRecognizers/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="bottom" secondItem="htG-4x-KgQ" secondAttribute="bottom" id="4QU-2i-Bt2"/>
                                                                     <constraint firstItem="htG-4x-KgQ" firstAttribute="top" secondItem="NEh-Si-WSc" secondAttribute="top" id="7M9-kr-icZ"/>
