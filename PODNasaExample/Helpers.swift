@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import  UIKit
+
 extension URL {
     func withQueries(_ queries: [String: String]) -> URL? {
         var components = URLComponents(url: self,
@@ -52,3 +54,11 @@ extension String {
         return nil
     }
 }
+//class ImageSaver: NSObject {
+//    func writeToPhotoAlbum(image: UIImage){
+//        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveError), nil)
+//    }
+//    @objc func saveError(_ image: UIImage, didfinishsavingWithError error: Error?, contextInfo: UnsafeRawPointer){
+//        print("Save finished!")
+//    }
+//}

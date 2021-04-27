@@ -5,6 +5,8 @@
 //  Created by TheMacUser on 20.03.2021.
 import youtube_ios_player_helper
 import UIKit
+import Photos
+
 
 class MainTableViewController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YTPlayerViewDelegate {
     
@@ -44,8 +46,8 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     var hdImagesDictionary: [Date : UIImage] = [:] {
         didSet{
             if !isHDImageViewHiden {
-                hdImage.image = hdImagesDictionary[currentDate]
-                print("HDImage is \(hdImage.image)")
+                hdImageView.image = hdImagesDictionary[currentDate]
+                print("HDImageView now is Big: \(hdImageView.image)")
             }
         }
     }
@@ -91,23 +93,20 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     let playVarsDic = ["controls" : 1, "playsinline" : 1, "autohide" : 1, "showinfo" : 1, "autoplay" : 1, "modestbranding" : 1 ]
     var videoPlayerView: YTPlayerView = YTPlayerView()
     lazy var currentObject: PODObject = podObjectDictionary[currentDate]!
-    var hdImageView = UIView()
     var isHDImageViewHiden: Bool = true {
         didSet {
-            print("isHDImageViewHiden IS CHANGED \(isHDImageViewHiden)")
             if isHDImageViewHiden {
-                print("HDImageView is Hiden")
-                hdImageView.isHidden = true
+                hdImageScrollView.isHidden = true
             } else {
-                print("HDImageView is NOT Hiden")
-                
-                if let bigImageSize = hdImagesDictionary[currentDate] {
-                    hdImage.image = bigImageSize
+                if let image = hdImagesDictionary[currentDate] {
+                    hdImageView.image = image
                 } else {
+                    hdImageView.image = imagesDictionary[currentDate]
                     updateHDImage(date: currentDate)
-                    hdImage.image = imagesDictionary[currentDate]
+                    
                 }
-                hdImageView.isHidden = false
+               // hdImageView.addGestureRecognizer(doubleTapRecognizer)
+                hdImageScrollView.isHidden = false
                 
 //                guard let object = podObjectDictionary[currentDate], let image = imagesDictionary[currentDate] else {return}
 //                if let bigImage = hdImagesDictionary[currentDate] {
@@ -130,47 +129,54 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         }
     }
     var hdImage = UIImageView()
+    let hdImageScrollView = UIScrollView()
+    let hdImageView = UIImageView()
+    var saveHDImageAfterDownload = false
+    var doubleTapRecognizer = UITapGestureRecognizer()
+//    let imagesaver = ImageSaver()
+    var photoAlbum: PhotoManager!
     override func viewDidLoad() {
         super.viewDidLoad()
+        creatingPhotoAlbum()
         tableView.alwaysBounceVertical = false
-        //hdImageView = UIView()
-       //hdImageView = UIView(frame: UIScreen.main.bounds)
-        hdImageView.layer.backgroundColor = (UIColor.black.cgColor)
-        hdImageView.alpha = 1
-        view.addSubview(hdImageView)
-        hdImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            hdImageView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            hdImageView.heightAnchor.constraint(equalToConstant: 500),
-            hdImageView.heightAnchor.constraint(equalTo: view.heightAnchor),
-            hdImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            hdImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-            
-        ])
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
-        button.setTitle("Close", for: .normal)
-        button.addTarget(self, action: #selector(closehdImageView), for: .touchUpInside)
-        hdImage = UIImageView(frame: CGRect(x: 0, y: 0, width: self.hdImageView.frame.width, height: hdImageView.frame.height))
-        hdImage.contentMode = .scaleAspectFit
-        hdImageView.addSubview(hdImage)
-        hdImage.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            hdImage.widthAnchor.constraint(equalTo: hdImageView.widthAnchor),
-            hdImage.heightAnchor.constraint(equalTo: hdImageView.heightAnchor),
-            hdImage.centerXAnchor.constraint(equalTo: hdImageView.centerXAnchor),
-            hdImage.centerYAnchor.constraint(equalTo: hdImageView.centerYAnchor)
-        ])
+        doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap(gestureRecognizer:)))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        self.hdImageView.addGestureRecognizer(doubleTapRecognizer)
+//        hdImageScrollView.addGestureRecognizer(doubleTapRecognizer)
+        setupScrollView()
+        setupScrollingViews()
+        hdImageScrollView.isHidden = true
+        hdImageScrollView.delegate = self
+        hdImageScrollView.layer.backgroundColor = (UIColor.black.cgColor)
+        self.hdImageScrollView.minimumZoomScale = 1.0
+        self.hdImageScrollView.maximumZoomScale = 5.0
         
-        hdImageView.addSubview(button)
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(dragImg(_ :)))
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(sender:)))
-        hdImageView.addGestureRecognizer(panGesture)
-        hdImageView.addGestureRecognizer(pinch)
-        hdImageView.isUserInteractionEnabled = true
-        hdImageView.isHidden = true
-//        videoPlayerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: 350, height: 250))
-//        videoPlayerView.load(withVideoId: "")
-//        videoPlayerView.delegate = self
+        let closeButton = UIButton()
+        let imageSaveButton = UIButton()
+        imageSaveButton.layer.cornerRadius = 25
+        closeButton.layer.cornerRadius = 25
+        imageSaveButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        closeButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        hdImageScrollView.addSubview(closeButton)
+        hdImageScrollView.addSubview(imageSaveButton)
+        imageSaveButton.translatesAutoresizingMaskIntoConstraints = false
+        imageSaveButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        imageSaveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        imageSaveButton.bottomAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.bottomAnchor, constant: -35 ).isActive = true
+        imageSaveButton.centerXAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.centerXAnchor, constant: 0 ).isActive = true
+        let saveButtonImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: UIImage.SymbolConfiguration(scale: .large))?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        imageSaveButton.setImage(saveButtonImage, for: .normal)
+        imageSaveButton.addTarget(self, action: #selector(saveImage(sender: )), for: .touchUpInside)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        closeButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        closeButton.topAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.topAnchor, constant: 15 ).isActive = true
+        closeButton.leadingAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.leadingAnchor, constant: 15 ).isActive = true
+
+        let closeButtonImage = UIImage(systemName: "multiply", withConfiguration: UIImage.SymbolConfiguration(scale: .large))?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        closeButton.setImage(closeButtonImage, for: .normal)
+        closeButton.addTarget(self, action: #selector(closehdImageView), for: .touchUpInside)
+        
         chevronLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
         datePicker.date = today
         datePicker.maximumDate = today
@@ -185,12 +191,33 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
 //        view.bringSubviewToFront(customView)
 //    }
     @objc func dragImg(_ sender: UIPanGestureRecognizer){
+        guard !(sender.view?.frame == self.view.frame) else {return}
         let translation = sender.translation(in: self.view)
+        print(translation)
+        print(hdImageView.frame.origin)
         hdImageView.center = CGPoint(x: hdImageView.center.x + translation.x, y: hdImageView.center.y + translation.y)
         sender.setTranslation(CGPoint.zero, in: self.view)
     }
+    @objc func doubleTap(gestureRecognizer: UITapGestureRecognizer){
+        print("Double tap!")
+        let scale = min(hdImageScrollView.zoomScale * 2, hdImageScrollView.maximumZoomScale)
+        if scale != hdImageScrollView.zoomScale {
+            let point = gestureRecognizer.location(in: hdImageView)
+            print(point)
+            let centerPoint = hdImageView.center
+//            let xOffset = point.x - centerPoint.x
+//            let yOffset = point.y - centerPoint.y
+            let scrollSize = hdImageScrollView.frame.size
+            let size = CGSize(width: scrollSize.width / scale, height: scrollSize.height / scale)
+            let origin = CGPoint(x: point.x - size.width, y: point.y - size.height)
+            hdImageScrollView.zoom(to: CGRect(origin: origin, size: size), animated: true)
+            //hdImageScrollView.zoom(to: CGRect(, animated: <#T##Bool#>)
+        }
+    }
     @objc func closehdImageView(){
-        isHDImageViewHiden = true
+        hdImageScrollView.isHidden = true
+        hdImageView.image = nil
+        hdImageScrollView.zoomScale = 1.0
         tableView.isScrollEnabled = true
     }
     @objc func handlePinch(sender: UIPinchGestureRecognizer){
@@ -247,7 +274,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         cell.isUserInteractionEnabled = true
         let date = dateArray[indexPath.row]
         let dayObject = podObjectDictionary[date]
-        cell.ytPlayerView?.load(withVideoId: "")
         if dayObject?.mediaType == "video" {
             cell.ytPlayerView?.isHidden = false
             cell.imageView.isHidden = true
@@ -301,9 +327,36 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("TAP!")
+        //hdImageScrollView.isHidden = false
         isHDImageViewHiden = false
         tableView.isScrollEnabled = false
     
+    }
+    func setupScrollView(){
+        hdImageScrollView.translatesAutoresizingMaskIntoConstraints = false
+        hdImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(hdImageScrollView)
+        hdImageScrollView.addSubview(hdImageView)
+        hdImageView.contentMode = .scaleAspectFit
+        hdImageView.isUserInteractionEnabled = true
+        
+        hdImageScrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        hdImageScrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        hdImageScrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        hdImageScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        hdImageScrollView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        hdImageView.centerXAnchor.constraint(equalTo: hdImageScrollView.centerXAnchor).isActive = true
+        hdImageView.widthAnchor.constraint(equalTo: hdImageScrollView.widthAnchor).isActive = true
+        hdImageView.topAnchor.constraint(equalTo: hdImageScrollView.topAnchor).isActive = true
+        hdImageView.bottomAnchor.constraint(equalTo: hdImageScrollView.bottomAnchor).isActive = true
+        hdImageView.centerYAnchor.constraint(equalTo: hdImageScrollView.centerYAnchor).isActive = true
+    }
+    func setupScrollingViews(){
+       
+    }
+    override func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.hdImageView
     }
     func fetchObject(withDate date: Date){
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -328,7 +381,20 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             }
         }
     }
-    
+    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
+        switch state {
+        case .buffering:
+            print("Buffering")
+        case .ended:
+            print("Ended")
+        case .unknown:
+            print("unknowon")
+        case .unstarted:
+            print("unstarted")
+        default:
+            break
+        }
+    }
     func initialSetupCollectionView(){
         dateArray.removeAll()
         var date: Date!
@@ -419,6 +485,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     func getImage(from urlString: String, completion: @escaping(UIImage?) -> Void){
         DispatchQueue.global().async {
             if let imageURL = URL(string: urlString), let imageData = try? Data(contentsOf: imageURL) {
+                print("ImageData of ImageData is \(imageData)")
                 completion(UIImage(data: imageData))
             }
             else {
@@ -434,6 +501,10 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             if let image = image {
                 DispatchQueue.main.async {
                     self.hdImagesDictionary[date] = image
+                    if self.saveHDImageAfterDownload {
+                        self.photoAlbum.save(image, completion: {_,_ in })
+                    }
+                    self.saveHDImageAfterDownload = false
                 }
             }
         }
@@ -460,5 +531,65 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         playerView.playVideo()
     }
+    @objc func saveImage(sender: UIButton){
+        let titleString = NSAttributedString(string: "Збереження", attributes: [.foregroundColor : UIColor.white, .strokeWidth : -5, .strokeColor : UIColor.white, .font : UIFont(name: "Helvetica", size: 15.0)])
+        let alertController = UIAlertController(title: "", message: nil, preferredStyle: .actionSheet)
+        alertController.setValue(titleString, forKey: "attributedTitle")
+        let cancelAction = UIAlertAction(title: "Відмінити", style: .cancel, handler: {_ in
+            UIView.animate(withDuration: 0.2) {
+                sender.transform = CGAffineTransform(translationX: 0, y: 0)
+            }
+        })
+        let imageSavingAction = UIAlertAction(title: "Менший розмір", style: .default, handler: { _ in
+            UIView.animate(withDuration: 0.2) {
+                sender.transform = CGAffineTransform(translationX: 0, y: 0)
+            }
+            if let image = self.imagesDictionary[self.currentDate] {
+                self.photoAlbum.save(image, completion: {_,_ in })
+                print("image saved!")
+            } else {
+                print("Error saving image to the Photo Album!")
+            }
+        })
+        let hdImageSavingAction = UIAlertAction(title: "Більший розмір", style: .default, handler: { _ in
+            UIView.animate(withDuration: 0.2) {
+                sender.transform = CGAffineTransform(translationX: 0, y: 0)
+            }
+            if let image = self.hdImagesDictionary[self.currentDate]{
+                self.photoAlbum.save(image, completion: {_,_ in })
+            } else {
+                self.saveHDImageAfterDownload = true
+                print("Error saving HD image to the Photo Album!")
+            }
+        })
+        let subview = (alertController.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
+        subview.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        imageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
+        hdImageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
+        alertController.addAction(cancelAction)
+        alertController.addAction(imageSavingAction)
+        alertController.addAction(hdImageSavingAction)
+        
+//        alertController.popoverPresentationController?.sourceView = sender
+        present(alertController, animated: true, completion: nil)
+        UIView.animate(withDuration: 0.2) {
+            sender.transform = CGAffineTransform(translationX: 0, y: 150)
+        }
+//        imagesaver.writeToPhotoAlbum(image: imagesDictionary[currentDate]!)
+        
+        
+    }
+    func creatingPhotoAlbum(){
+            photoAlbum = PhotoManager(albumName: "APOD pictures")
+            print("Album when creating pet: \(photoAlbum)")
 
+        }
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
+        for index in 0...dateArray.count {
+            let indexPath = IndexPath(row: index, section: 0)
+            let cellOfImagesCollectionView = imagesCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
+            cellOfImagesCollectionView?.ytPlayerView?.pauseVideo()
+        }
+    }
 }

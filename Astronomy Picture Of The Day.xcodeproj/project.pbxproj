@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5231518A2615AF2700316BD6 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */; };
 		523151912615DE8500316BD6 /* SnapingEffectOfImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523151902615DE8500316BD6 /* SnapingEffectOfImages.swift */; };
+		5233967726345C3800F059BF /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5233967626345C3800F059BF /* PhotoManager.swift */; };
 		5248EC9326063C400020E8EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248EC9226063C400020E8EF /* AppDelegate.swift */; };
 		5248EC9526063C400020E8EF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248EC9426063C400020E8EF /* SceneDelegate.swift */; };
 		5248EC9A26063C400020E8EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5248EC9826063C400020E8EF /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 		1A644E0916D9C690D932EE3E /* Pods-PODNasaExampleCopy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PODNasaExampleCopy.debug.xcconfig"; path = "Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy.debug.xcconfig"; sourceTree = "<group>"; };
 		523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		523151902615DE8500316BD6 /* SnapingEffectOfImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapingEffectOfImages.swift; sourceTree = "<group>"; };
+		5233967626345C3800F059BF /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
 		5248EC8F26063C400020E8EF /* Astronomy Picture Of The Day.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Astronomy Picture Of The Day.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5248EC9226063C400020E8EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5248EC9426063C400020E8EF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				5248ECB7260646CF0020E8EF /* Helpers.swift */,
 				523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */,
 				523151902615DE8500316BD6 /* SnapingEffectOfImages.swift */,
+				5233967626345C3800F059BF /* PhotoManager.swift */,
 			);
 			path = PODNasaExample;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				5248ECB2260642740020E8EF /* PODObject.swift in Sources */,
 				5248ECB8260646CF0020E8EF /* Helpers.swift in Sources */,
 				5248EC9326063C400020E8EF /* AppDelegate.swift in Sources */,
+				5233967726345C3800F059BF /* PhotoManager.swift in Sources */,
 				5231518A2615AF2700316BD6 /* ImageCollectionViewCell.swift in Sources */,
 				5248ECAF260641BE0020E8EF /* MainTableViewController.swift in Sources */,
 				5248ECB52606456F0020E8EF /* Requests.swift in Sources */,
