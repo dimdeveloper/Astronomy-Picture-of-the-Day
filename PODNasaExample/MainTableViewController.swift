@@ -11,6 +11,7 @@ import Photos
 class MainTableViewController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, YTPlayerViewDelegate {
     
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet var playerView: YTPlayerView!
     @IBOutlet weak var chevronLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -20,6 +21,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     @IBOutlet weak var imageDescription: UITextView!
     
     @IBAction func datePickerDateChanged(_ sender: UIDatePicker) {
+        spinner.startAnimating()
         currentDate = datePicker.date
         initialSetupCollectionView()
     }
@@ -47,7 +49,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         didSet{
             if !isHDImageViewHiden {
                 hdImageView.image = hdImagesDictionary[currentDate]
-                print("HDImageView now is Big: \(hdImageView.image)")
             }
         }
     }
@@ -66,6 +67,8 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     let request = Requests()
     lazy var currentDate = today {
         didSet {
+            (imagesDictionary[currentDate] == nil) ? spinner.startAnimating() : spinner.stopAnimating()
+            
             datePicker.date = currentDate
             if let object = podObjectDictionary[currentDate] {
                 updateTableView(with: object)
@@ -137,6 +140,8 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     var photoAlbum: PhotoManager!
     override func viewDidLoad() {
         super.viewDidLoad()
+        spinner.hidesWhenStopped = true
+        spinner.startAnimating()
         creatingPhotoAlbum()
         tableView.alwaysBounceVertical = false
         doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap(gestureRecognizer:)))
@@ -193,17 +198,13 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     @objc func dragImg(_ sender: UIPanGestureRecognizer){
         guard !(sender.view?.frame == self.view.frame) else {return}
         let translation = sender.translation(in: self.view)
-        print(translation)
-        print(hdImageView.frame.origin)
         hdImageView.center = CGPoint(x: hdImageView.center.x + translation.x, y: hdImageView.center.y + translation.y)
         sender.setTranslation(CGPoint.zero, in: self.view)
     }
     @objc func doubleTap(gestureRecognizer: UITapGestureRecognizer){
-        print("Double tap!")
         let scale = min(hdImageScrollView.zoomScale * 2, hdImageScrollView.maximumZoomScale)
         if scale != hdImageScrollView.zoomScale {
             let point = gestureRecognizer.location(in: hdImageView)
-            print(point)
             let centerPoint = hdImageView.center
 //            let xOffset = point.x - centerPoint.x
 //            let yOffset = point.y - centerPoint.y
@@ -271,15 +272,16 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
+        //spinner.startAnimating()
         cell.isUserInteractionEnabled = true
         let date = dateArray[indexPath.row]
         let dayObject = podObjectDictionary[date]
         if dayObject?.mediaType == "video" {
-            cell.ytPlayerView?.isHidden = false
             cell.imageView.isHidden = true
             if let videoURL = dayObject!.imageURL, let videoID = videoURL.getVideoID() {
-                print(cell.ytPlayerView)
                 cell.ytPlayerView?.load(withVideoId: videoID, playerVars: playVarsDic)
+                cell.ytPlayerView?.isHidden = false
+                spinner.stopAnimating()
                 
 
         }
@@ -288,11 +290,11 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             cell.imageView.isHidden = false
             if let image = imagesDictionary[date] {
                 cell.imageView.image = image
+                spinner.stopAnimating()
             } else {
                 cell.imageView.image = UIImage(named: "imagePlaceholder")
                 cell.isUserInteractionEnabled = false
             }
-            print(cell.imageView.image)
         }
 //        for singleView in cell.subviews {
 //                    if singleView == videoPlayerView {
@@ -326,7 +328,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         return sizeOfTheCell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("TAP!")
         //hdImageScrollView.isHidden = false
         isHDImageViewHiden = false
         tableView.isScrollEnabled = false
@@ -370,12 +371,10 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                 
                 self.podObjectDictionary[date] = object
                 if object.mediaType == "video" {
-                    print("MediaType is Video!")
                     DispatchQueue.main.async {
                         self.imagesCollectionView.reloadData()
                     }
                 } else {
-                    print("UpdateImage!")
                     self.updateImage(date: date)
                 }
             }
@@ -431,7 +430,11 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        let visibleCell = imagesCollectionView.cellForItem(at: indexPathForVisibleCell!) as? ImageCollectionViewCell
         currentDate = dateArray[indexPathOfVisibleCell.row]
+        print(currentDate)
+        ((imagesDictionary[currentDate] == nil) && visibleCell?.ytPlayerView?.isHidden == true) ? spinner.startAnimating() : spinner.stopAnimating()
+            
         for index in 0...dateArray.count {
             let indexPath = IndexPath(row: index, section: 0)
             let cellOfImagesCollectionView = imagesCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
@@ -460,12 +463,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         
     }
     override func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        spinner.stopAnimating()
         if !isDatePickerHidden {
         isDatePickerHidden = !isDatePickerHidden
         tableView.beginUpdates()
         tableView.endUpdates()
         }
-        
     }
 
     func updateTableView(with object: PODObject){
@@ -477,15 +480,13 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         guard let currentObjectImage = podObjectDictionary[date], let imageURL = currentObjectImage.imageURL else {return}
         getImage(from: imageURL) { (image) in
             if let image = image {
-                print("Image is \(image)")
-                self.imagesDictionary[self.currentDate] = image
+                self.imagesDictionary[date] = image
             }
         }
     }
     func getImage(from urlString: String, completion: @escaping(UIImage?) -> Void){
         DispatchQueue.global().async {
             if let imageURL = URL(string: urlString), let imageData = try? Data(contentsOf: imageURL) {
-                print("ImageData of ImageData is \(imageData)")
                 completion(UIImage(data: imageData))
             }
             else {
@@ -532,9 +533,15 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         playerView.playVideo()
     }
     @objc func saveImage(sender: UIButton){
-        let titleString = NSAttributedString(string: "Збереження", attributes: [.foregroundColor : UIColor.white, .strokeWidth : -5, .strokeColor : UIColor.white, .font : UIFont(name: "Helvetica", size: 15.0)])
         let alertController = UIAlertController(title: "", message: nil, preferredStyle: .actionSheet)
+        let text = "Збереження"
+        let titleString = NSMutableAttributedString(string: text)
+        let range = (titleString.string as NSString).range(of: text)
+        titleString.addAttributes([NSAttributedString.Key.foregroundColor : UIColor.white], range: NSMakeRange(0, text.count))
+//        let titleString = NSAttributedString(string: "Збереження", attributes: [.strokeWidth : -3.0, .strokeColor : UIColor.white, .font : UIFont(name: "Helvetica", size: 15.0), .foregroundColor : UIColor.white])
+        
         alertController.setValue(titleString, forKey: "attributedTitle")
+        
         let cancelAction = UIAlertAction(title: "Відмінити", style: .cancel, handler: {_ in
             UIView.animate(withDuration: 0.2) {
                 sender.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -563,9 +570,9 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             }
         })
         let subview = (alertController.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
-        subview.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        imageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
-        hdImageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
+        //subview.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        //imageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
+        //hdImageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
         alertController.addAction(cancelAction)
         alertController.addAction(imageSavingAction)
         alertController.addAction(hdImageSavingAction)
@@ -581,7 +588,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     func creatingPhotoAlbum(){
             photoAlbum = PhotoManager(albumName: "APOD pictures")
-            print("Album when creating pet: \(photoAlbum)")
 
         }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
