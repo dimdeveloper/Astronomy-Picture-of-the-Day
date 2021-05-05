@@ -16,27 +16,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Astronomy  Picture Of the Day" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2S-h2-4FX">
-                                <rect key="frame" x="90" y="501.5" width="234.5" height="72"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconNasa" translatesAutoresizingMaskIntoConstraints="NO" id="eGJ-ON-Viy">
-                                <rect key="frame" x="87" y="211.5" width="240" height="240"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="240" id="CEC-jo-2G4"/>
-                                    <constraint firstAttribute="width" constant="240" id="jc8-dY-vxB"/>
-                                </constraints>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="Wck-YB-z2O">
+                                <rect key="frame" x="87" y="276" width="240" height="344"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconNasa" translatesAutoresizingMaskIntoConstraints="NO" id="eGJ-ON-Viy">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="240"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="240" id="CEC-jo-2G4"/>
+                                            <constraint firstAttribute="width" constant="240" id="jc8-dY-vxB"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Astronomy  Picture Of the Day" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2S-h2-4FX">
+                                        <rect key="frame" x="0.0" y="272" width="240" height="72"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="linkColor"/>
                         <constraints>
-                            <constraint firstItem="l2S-h2-4FX" firstAttribute="top" secondItem="eGJ-ON-Viy" secondAttribute="bottom" constant="50" id="0kA-ne-Y6Z"/>
-                            <constraint firstItem="l2S-h2-4FX" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="T7J-OR-azF"/>
-                            <constraint firstItem="l2S-h2-4FX" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="1.2" id="WnB-Go-xk1"/>
-                            <constraint firstItem="eGJ-ON-Viy" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="tBd-4f-2Cx"/>
+                            <constraint firstItem="Wck-YB-z2O" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ovZ-fg-WTn"/>
+                            <constraint firstItem="Wck-YB-z2O" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="z9H-tt-ziB"/>
                         </constraints>
                     </view>
                 </viewController>
