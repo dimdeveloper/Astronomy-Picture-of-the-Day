@@ -26,9 +26,9 @@ class SnappingFlowLayout: UICollectionViewFlowLayout {
         print(itemSize)
         print(self.collectionViewContentSize)
         collectionView!.decelerationRate = UIScrollView.DecelerationRate.fast
-        collectionView!.setContentOffset(CGPoint(x: collectionView!.collectionViewLayout.collectionViewContentSize.width/itemsCount * 4, y: 0), animated: false)
+        collectionView!.setContentOffset(CGPoint(x: collectionView!.collectionViewLayout.collectionViewContentSize.width/itemsCount * (itemsCount - 1), y: 0), animated: false)
         print("ItemSize * 4 is \(itemSize.width * 4)")
-        print("Calculated contentOffSet is \(collectionView!.collectionViewLayout.collectionViewContentSize.width/itemsCount * 4)")
+        print("Calculated contentOffSet is \(collectionView!.collectionViewLayout.collectionViewContentSize.width/itemsCount * (itemsCount - 1))")
         print("ContentOffset is \(collectionView!.contentOffset)")
         print("CollectionView width is \(collectionView!.collectionViewLayout.collectionViewContentSize.width)")
     }

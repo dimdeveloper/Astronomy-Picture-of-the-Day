@@ -12,7 +12,7 @@
         <scene sceneID="Z4h-Rd-U98">
             <objects>
                 <tableViewController id="ctx-6n-Z6y" customClass="MainTableViewController" customModule="Astronomy_Picture_Of_The_Day" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="VAn-o1-iOU">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="VAn-o1-iOU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -20,7 +20,7 @@
                             <tableViewSection id="P4c-V8-pO4">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="2f8-8f-dX0">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="18" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2f8-8f-dX0" id="ixG-gb-JNr">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
@@ -66,7 +66,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="172" id="HgV-wA-51o">
-                                        <rect key="frame" x="0.0" y="71.5" width="414" height="172"/>
+                                        <rect key="frame" x="0.0" y="61.5" width="414" height="172"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HgV-wA-51o" id="Zgm-NS-PsS">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="172"/>
@@ -91,13 +91,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="311" id="Qbr-Np-PBJ">
-                                        <rect key="frame" x="0.0" y="243.5" width="414" height="311"/>
+                                        <rect key="frame" x="0.0" y="233.5" width="414" height="311"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qbr-Np-PBJ" id="RBX-DO-lIn">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="311"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ei2-tl-d6V">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ei2-tl-d6V">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="311"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" sectionInsetReference="safeArea" id="3bS-dp-0pu" customClass="SnappingFlowLayout" customModule="Astronomy_Picture_Of_The_Day" customModuleProvider="target">
@@ -161,7 +161,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="MSH-1L-flU">
-                                        <rect key="frame" x="0.0" y="554.5" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="544.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MSH-1L-flU" id="54S-Ln-n9s">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
@@ -182,7 +182,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="312" id="LmO-cd-mrf">
-                                        <rect key="frame" x="0.0" y="598" width="414" height="312"/>
+                                        <rect key="frame" x="0.0" y="588" width="414" height="312"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LmO-cd-mrf" id="HKU-Wc-FOE">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="312"/>
@@ -212,7 +212,6 @@
                             <outlet property="delegate" destination="ctx-6n-Z6y" id="85T-ca-orj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="gLZ-R1-BJB"/>
                     <connections>
                         <outlet property="chevronLabel" destination="nyr-kh-h2m" id="chN-1d-5fZ"/>
                         <outlet property="dateLabel" destination="aOB-iL-WZV" id="8hL-Ts-kK3"/>
@@ -226,24 +225,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xvm-eF-2zh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="881.15942028985512" y="75"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="9tA-1V-yfd">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xQB-pD-5Bj" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nUp-iU-MrQ">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ctx-6n-Z6y" kind="relationship" relationship="rootViewController" id="7cm-pT-uz4"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6W9-1I-jsh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-28.985507246376812" y="75"/>
         </scene>
     </scenes>
     <resources>

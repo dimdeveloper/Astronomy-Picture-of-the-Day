@@ -148,6 +148,8 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     var photoAlbum: PhotoManager!
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.contentInsetAdjustmentBehavior = .never
+        tableView.isScrollEnabled = false
         loadUserDefaults()
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
@@ -158,10 +160,11 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         self.hdImageView.addGestureRecognizer(doubleTapRecognizer)
 //        hdImageScrollView.addGestureRecognizer(doubleTapRecognizer)
         setupScrollView()
-        setupScrollingViews()
+        hdImageScrollView.contentInsetAdjustmentBehavior = .never
         hdImageScrollView.isHidden = true
         hdImageScrollView.delegate = self
-        hdImageScrollView.layer.backgroundColor = (UIColor.black.cgColor)
+        //hdImageScrollView.layer.backgroundColor = (UIColor.black.cgColor)
+        hdImageScrollView.layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         self.hdImageScrollView.minimumZoomScale = 1.0
         self.hdImageScrollView.maximumZoomScale = 5.0
         
@@ -198,12 +201,14 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         initialSetupCollectionView()
         fetchObject(withDate: today)
         
+        setupScrollingViews()
+        
    
         
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        updateScrollViewConstraints()
         
     }
     @objc func dragImg(_ sender: UIPanGestureRecognizer){
@@ -230,7 +235,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         hdImageScrollView.isHidden = true
         hdImageView.image = nil
         hdImageScrollView.zoomScale = 1.0
-        tableView.isScrollEnabled = true
+        tableView.isScrollEnabled = UIDevice.current.orientation.isLandscape ? true : false
     }
     @objc func handlePinch(sender: UIPinchGestureRecognizer){
         guard sender.view != nil else {return}
@@ -432,7 +437,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     func setupScrollView(){
         hdImageScrollView.translatesAutoresizingMaskIntoConstraints = false
         hdImageView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.addSubview(hdImageScrollView)
+        view.addSubview(hdImageScrollView)
         hdImageScrollView.addSubview(hdImageView)
         hdImageView.contentMode = .scaleAspectFit
         hdImageView.isUserInteractionEnabled = true
@@ -440,11 +445,17 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         saveSpiner.translatesAutoresizingMaskIntoConstraints = false
 //        hdImageScrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 //        hdImageScrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        hdImageScrollView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-        hdImageScrollView.bottomAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
-        hdImageScrollView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor).isActive = true
-        hdImageScrollView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor).isActive = true
-//        hdImageScrollView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        //hdImageScrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        
+    }
+    func updateScrollViewConstraints(){
+        let safeAreaEdgeInsets = view.safeAreaInsets
+        hdImageScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,  constant: safeAreaEdgeInsets.bottom).isActive = true
+        hdImageScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        hdImageScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        //hdImageScrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        hdImageScrollView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        
         
         hdImageView.centerXAnchor.constraint(equalTo: hdImageScrollView.centerXAnchor).isActive = true
         hdImageView.widthAnchor.constraint(equalTo: hdImageScrollView.widthAnchor).isActive = true
@@ -469,7 +480,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                     self.updateTableView(with: object)
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
-                
                 
                 self.podObjectDictionary[date] = object
                 if object.mediaType == "video" {
@@ -527,7 +537,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     func setContentOffset(){
         let itemsCount = CGFloat((imagesCollectionView?.numberOfItems(inSection: 0))!)
-        imagesCollectionView.setContentOffset(CGPoint(x: imagesCollectionView.collectionViewLayout.collectionViewContentSize.width/itemsCount*4, y: 0), animated: false)
+        imagesCollectionView.setContentOffset(CGPoint(x: (imagesCollectionView.collectionViewLayout.collectionViewContentSize.width*4)/itemsCount*4, y: 0), animated: false)
     }
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
@@ -632,6 +642,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             self.imagesCollectionView.reloadData()
             self.imagesCollectionView.setContentOffset(newOffset, animated: false)
         }, completion: nil)
+        
 
     }
     @objc func tapFunction(){
@@ -719,5 +730,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             let cellOfImagesCollectionView = imagesCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
             cellOfImagesCollectionView?.ytPlayerView?.pauseVideo()
         }
+        tableView.isScrollEnabled = UIDevice.current.orientation.isLandscape ? true : false
+        
     }
 }
