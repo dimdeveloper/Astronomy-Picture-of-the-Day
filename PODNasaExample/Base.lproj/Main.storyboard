@@ -97,10 +97,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="311"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ei2-tl-d6V">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ei2-tl-d6V">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="311"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" sectionInsetReference="safeArea" id="3bS-dp-0pu" customClass="SnappingFlowLayout" customModule="Astronomy_Picture_Of_The_Day" customModuleProvider="target">
+                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" sectionInsetReference="layoutMargins" id="3bS-dp-0pu" customClass="SnappingFlowLayout" customModule="Astronomy_Picture_Of_The_Day" customModuleProvider="target">
                                                         <size key="itemSize" width="128" height="128"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -108,7 +108,7 @@
                                                     </collectionViewFlowLayout>
                                                     <cells>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="ImageCell" id="EVh-2a-ig6" customClass="ImageCollectionViewCell" customModule="Astronomy_Picture_Of_The_Day" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                            <rect key="frame" x="8" y="8" width="128" height="128"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="NEh-Si-WSc">
                                                                 <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
@@ -151,12 +151,12 @@
                                                 </activityIndicatorView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Ei2-tl-d6V" firstAttribute="top" secondItem="RBX-DO-lIn" secondAttribute="top" id="3UE-cR-IEC"/>
-                                                <constraint firstAttribute="trailing" secondItem="Ei2-tl-d6V" secondAttribute="trailing" id="MMt-yK-tD2"/>
+                                                <constraint firstAttribute="bottom" secondItem="Ei2-tl-d6V" secondAttribute="bottom" id="3bD-Xv-YGY"/>
                                                 <constraint firstItem="eFM-1d-RWw" firstAttribute="centerX" secondItem="RBX-DO-lIn" secondAttribute="centerX" id="O2O-Vs-yOo"/>
-                                                <constraint firstAttribute="bottom" secondItem="Ei2-tl-d6V" secondAttribute="bottom" id="ez7-k1-So6"/>
+                                                <constraint firstItem="Ei2-tl-d6V" firstAttribute="top" secondItem="RBX-DO-lIn" secondAttribute="top" id="Xl1-kN-XoC"/>
+                                                <constraint firstItem="Ei2-tl-d6V" firstAttribute="leading" secondItem="RBX-DO-lIn" secondAttribute="leading" id="nIQ-N2-pUQ"/>
                                                 <constraint firstItem="eFM-1d-RWw" firstAttribute="centerY" secondItem="RBX-DO-lIn" secondAttribute="centerY" id="q4q-o0-SMA"/>
-                                                <constraint firstItem="Ei2-tl-d6V" firstAttribute="leading" secondItem="RBX-DO-lIn" secondAttribute="leading" id="uIG-di-Mlz"/>
+                                                <constraint firstAttribute="trailing" secondItem="Ei2-tl-d6V" secondAttribute="trailing" id="qEy-Wz-dbl"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

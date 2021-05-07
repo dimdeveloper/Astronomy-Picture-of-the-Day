@@ -104,6 +104,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     lazy var currentObject: PODObject = podObjectDictionary[currentDate]!
     var isHDImageViewHiden: Bool = true {
         didSet {
+            updateTableViewScrollEnable()
             if isHDImageViewHiden {
                 hdImageScrollView.isHidden = true
             } else {
@@ -149,12 +150,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.isScrollEnabled = false
         loadUserDefaults()
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
         creatingPhotoAlbum()
         tableView.alwaysBounceVertical = false
+        updateTableViewScrollEnable()
         doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap(gestureRecognizer:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         self.hdImageView.addGestureRecognizer(doubleTapRecognizer)
@@ -208,7 +209,10 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         updateScrollViewConstraints()
+        print(tableView.isScrollEnabled)
+        
         
     }
     @objc func dragImg(_ sender: UIPanGestureRecognizer){
@@ -232,10 +236,10 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         }
     }
     @objc func closehdImageView(){
-        hdImageScrollView.isHidden = true
+        isHDImageViewHiden = true
         hdImageView.image = nil
         hdImageScrollView.zoomScale = 1.0
-        tableView.isScrollEnabled = UIDevice.current.orientation.isLandscape ? true : false
+        
     }
     @objc func handlePinch(sender: UIPinchGestureRecognizer){
         guard sender.view != nil else {return}
@@ -346,7 +350,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //hdImageScrollView.isHidden = false
         isHDImageViewHiden = false
-        tableView.isScrollEnabled = false
     
     }
     func setupInstructionsView(){
@@ -723,6 +726,13 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             photoAlbum = PhotoManager(albumName: "APOD pictures")
 
         }
+    func updateTableViewScrollEnable(){
+        guard isHDImageViewHiden else {
+            tableView.isScrollEnabled = false
+            return
+        }
+        tableView.isScrollEnabled = (UIScreen.main.bounds.width > UIScreen.main.bounds.height) ? true : false
+    }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
         for index in 0...dateArray.count {
@@ -730,7 +740,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             let cellOfImagesCollectionView = imagesCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
             cellOfImagesCollectionView?.ytPlayerView?.pauseVideo()
         }
-        tableView.isScrollEnabled = UIDevice.current.orientation.isLandscape ? true : false
+       updateTableViewScrollEnable()
         
     }
 }
