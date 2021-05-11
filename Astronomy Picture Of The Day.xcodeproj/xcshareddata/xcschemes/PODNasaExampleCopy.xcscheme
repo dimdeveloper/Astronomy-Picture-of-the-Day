@@ -45,11 +45,20 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5248EC8E26063C400020E8EF"
+            BuildableName = "Astronomy Picture Of The Day.app"
+            BlueprintName = "Astronomy Picture Of The Day"
+            ReferencedContainer = "container:Astronomy Picture Of The Day.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5248EC8E26063C400020E8EF"
             BuildableName = "PODNasaExampleCopy.app"
             BlueprintName = "PODNasaExampleCopy"
             ReferencedContainer = "container:PODNasaExampleCopy.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

@@ -19,11 +19,10 @@
 		5248ECB2260642740020E8EF /* PODObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248ECB1260642740020E8EF /* PODObject.swift */; };
 		5248ECB52606456F0020E8EF /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248ECB42606456F0020E8EF /* Requests.swift */; };
 		5248ECB8260646CF0020E8EF /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5248ECB7260646CF0020E8EF /* Helpers.swift */; };
-		C0A70AC39C0B60AE0F97ECE9 /* Pods_PODNasaExampleCopy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F22CE90FDC42F2E13BF80EAB /* Pods_PODNasaExampleCopy.framework */; };
+		923D80E179283300D3283BED /* Pods_Astronomy_Picture_Of_The_Day.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89A50580FFDA42AD4B646152 /* Pods_Astronomy_Picture_Of_The_Day.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1A644E0916D9C690D932EE3E /* Pods-PODNasaExampleCopy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PODNasaExampleCopy.debug.xcconfig"; path = "Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy.debug.xcconfig"; sourceTree = "<group>"; };
 		523151892615AF2700316BD6 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		523151902615DE8500316BD6 /* SnapingEffectOfImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapingEffectOfImages.swift; sourceTree = "<group>"; };
 		5233967626345C3800F059BF /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
@@ -38,8 +37,9 @@
 		5248ECB1260642740020E8EF /* PODObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PODObject.swift; sourceTree = "<group>"; };
 		5248ECB42606456F0020E8EF /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		5248ECB7260646CF0020E8EF /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		E37E79090569DAC0A874B76A /* Pods-PODNasaExampleCopy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PODNasaExampleCopy.release.xcconfig"; path = "Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy.release.xcconfig"; sourceTree = "<group>"; };
-		F22CE90FDC42F2E13BF80EAB /* Pods_PODNasaExampleCopy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PODNasaExampleCopy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B0B0F657358FF9D8002A6D3 /* Pods-Astronomy Picture Of The Day.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astronomy Picture Of The Day.release.xcconfig"; path = "Target Support Files/Pods-Astronomy Picture Of The Day/Pods-Astronomy Picture Of The Day.release.xcconfig"; sourceTree = "<group>"; };
+		89A50580FFDA42AD4B646152 /* Pods_Astronomy_Picture_Of_The_Day.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Astronomy_Picture_Of_The_Day.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F53311C4AA4FE489E70E4B1 /* Pods-Astronomy Picture Of The Day.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astronomy Picture Of The Day.debug.xcconfig"; path = "Target Support Files/Pods-Astronomy Picture Of The Day/Pods-Astronomy Picture Of The Day.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,28 +47,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0A70AC39C0B60AE0F97ECE9 /* Pods_PODNasaExampleCopy.framework in Frameworks */,
+				923D80E179283300D3283BED /* Pods_Astronomy_Picture_Of_The_Day.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13E59833E9025F01D0733655 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F22CE90FDC42F2E13BF80EAB /* Pods_PODNasaExampleCopy.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		5248EC8626063C400020E8EF = {
 			isa = PBXGroup;
 			children = (
 				5248EC9126063C400020E8EF /* PODNasaExample */,
 				5248EC9026063C400020E8EF /* Products */,
 				D0158106867E8C25DB1A4858 /* Pods */,
-				13E59833E9025F01D0733655 /* Frameworks */,
+				59C51DC9C0D0587F51E7AA79 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,11 +92,19 @@
 			path = PODNasaExample;
 			sourceTree = "<group>";
 		};
+		59C51DC9C0D0587F51E7AA79 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				89A50580FFDA42AD4B646152 /* Pods_Astronomy_Picture_Of_The_Day.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D0158106867E8C25DB1A4858 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1A644E0916D9C690D932EE3E /* Pods-PODNasaExampleCopy.debug.xcconfig */,
-				E37E79090569DAC0A874B76A /* Pods-PODNasaExampleCopy.release.xcconfig */,
+				8F53311C4AA4FE489E70E4B1 /* Pods-Astronomy Picture Of The Day.debug.xcconfig */,
+				5B0B0F657358FF9D8002A6D3 /* Pods-Astronomy Picture Of The Day.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -116,11 +116,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5248ECA326063C420020E8EF /* Build configuration list for PBXNativeTarget "Astronomy Picture Of The Day" */;
 			buildPhases = (
-				0E54876E02F599AA1E55A995 /* [CP] Check Pods Manifest.lock */,
+				0976DB38DD035FAEC5E8E6CE /* [CP] Check Pods Manifest.lock */,
 				5248EC8B26063C400020E8EF /* Sources */,
 				5248EC8C26063C400020E8EF /* Frameworks */,
 				5248EC8D26063C400020E8EF /* Resources */,
-				6EE43132066E1E6443032372 /* [CP] Embed Pods Frameworks */,
+				0BA67A562C8FE75CD1F67414 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,7 +177,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0E54876E02F599AA1E55A995 /* [CP] Check Pods Manifest.lock */ = {
+		0976DB38DD035FAEC5E8E6CE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -192,28 +192,28 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PODNasaExampleCopy-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Astronomy Picture Of The Day-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6EE43132066E1E6443032372 /* [CP] Embed Pods Frameworks */ = {
+		0BA67A562C8FE75CD1F67414 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Astronomy Picture Of The Day/Pods-Astronomy Picture Of The Day-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Astronomy Picture Of The Day/Pods-Astronomy Picture Of The Day-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PODNasaExampleCopy/Pods-PODNasaExampleCopy-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Astronomy Picture Of The Day/Pods-Astronomy Picture Of The Day-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -375,7 +375,7 @@
 		};
 		5248ECA426063C420020E8EF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A644E0916D9C690D932EE3E /* Pods-PODNasaExampleCopy.debug.xcconfig */;
+			baseConfigurationReference = 8F53311C4AA4FE489E70E4B1 /* Pods-Astronomy Picture Of The Day.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -395,7 +395,7 @@
 		};
 		5248ECA526063C420020E8EF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E37E79090569DAC0A874B76A /* Pods-PODNasaExampleCopy.release.xcconfig */;
+			baseConfigurationReference = 5B0B0F657358FF9D8002A6D3 /* Pods-Astronomy Picture Of The Day.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

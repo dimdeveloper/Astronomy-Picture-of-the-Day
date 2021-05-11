@@ -637,13 +637,19 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         let width = imagesCollectionView.bounds.size.width
         print("Offset is \(offset)")
         print("Width is \(width)")
+        print("NewSize is \(size)")
+        print("New calculated size is \(size.width - view.safeAreaInsets.top*2)")
         let index = round(offset.x/width)
-        let newOffset: CGPoint = CGPoint(x: index*size.width, y: offset.y)
-        print("NewOffset is \(newOffset)")
-        print("Inset left is \(imagesCollectionView.safeAreaInsets.left)")
+        let newOffset: CGPoint = CGPoint(x: index*(size.width), y: offset.y)
+        let newPortretOffset: CGPoint = CGPoint(x: index*(size.width - view.safeAreaInsets.top*2), y: offset.y)
+        print("NewOffset is \(newPortretOffset)")
+        let newLandscapeOffset: CGPoint = CGPoint(x: index*(size.width - view.safeAreaInsets.left*2), y: offset.y)
+        print("Inset is \(view.safeAreaInsets)")
+        print("Is device in landscape mode \(UIDevice.current.orientation.isLandscape)")
         coordinator.animate ( alongsideTransition:  {(context) in
             self.imagesCollectionView.reloadData()
-            self.imagesCollectionView.setContentOffset(newOffset, animated: false)
+            self.imagesCollectionView.setContentOffset(newOffset, animated:  false)
+            
         }, completion: nil)
         
 
