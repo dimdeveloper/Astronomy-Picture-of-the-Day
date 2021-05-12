@@ -167,8 +167,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGq-t4-1Yd">
-                                                    <rect key="frame" x="20" y="11" width="0.0" height="22"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGq-t4-1Yd">
+                                                    <rect key="frame" x="20" y="11" width="386" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -176,6 +176,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="qGq-t4-1Yd" firstAttribute="leading" secondItem="54S-Ln-n9s" secondAttribute="leadingMargin" id="2te-aE-CXe"/>
+                                                <constraint firstAttribute="trailing" secondItem="qGq-t4-1Yd" secondAttribute="trailing" constant="8" id="LG6-RJ-MAY"/>
                                                 <constraint firstItem="qGq-t4-1Yd" firstAttribute="top" secondItem="54S-Ln-n9s" secondAttribute="topMargin" id="eq4-Zr-TVm"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="qGq-t4-1Yd" secondAttribute="bottom" id="uyJ-zQ-BFX"/>
                                             </constraints>

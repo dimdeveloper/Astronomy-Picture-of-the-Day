@@ -26,8 +26,6 @@ struct PODObject: Codable {
         self.imageURL = imageURL
         self.hdImageURL = hdImageURL
         self.mediaType = mediaType
-        
-        
     }
     init(from decoder: Decoder) throws {
         let valueContainer = try decoder.container(keyedBy: CodingKeys.self)

@@ -12,7 +12,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     
     
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet var playerView: YTPlayerView!
     @IBOutlet weak var chevronLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
@@ -50,7 +49,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         }
     }
     let imagesCollectionViewLayout = SnappingFlowLayout()
-    let today = Date()
     var hdImagesDictionary: [Date : UIImage] = [:] {
         didSet{
             if !isHDImageViewHiden {
@@ -71,6 +69,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
     let minScale: CGFloat = 1.0
     var podObjectDictionary: [Date : PODObject] = [:]
     let request = Requests()
+    let today = Date()
     lazy var currentDate = today {
         didSet {
             (imagesDictionary[currentDate] == nil) ? spinner.startAnimating() : spinner.stopAnimating()
@@ -100,7 +99,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         return Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
     }
     let playVarsDic = ["controls" : 1, "playsinline" : 1, "autohide" : 1, "showinfo" : 1, "autoplay" : 1, "modestbranding" : 1 ]
-    var videoPlayerView: YTPlayerView = YTPlayerView()
     lazy var currentObject: PODObject = podObjectDictionary[currentDate]!
     var isHDImageViewHiden: Bool = true {
         didSet {
@@ -115,38 +113,28 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                     updateHDImage(date: currentDate)
                     
                 }
-               // hdImageView.addGestureRecognizer(doubleTapRecognizer)
                 hdImageScrollView.isHidden = false
-                
-//                guard let object = podObjectDictionary[currentDate], let image = imagesDictionary[currentDate] else {return}
-//                if let bigImage = hdImagesDictionary[currentDate] {
-//                        self.hdImage.image = bigImage
-//                        print("hdImage.image = bigImage")
-//
-//                } else {
-//                    DispatchQueue.main.async {
-//                        self.hdImage.image = image
-//                        print("hdImage.image = Image")
-//                    }
-//
-//                    if let bigResolutionImage = updateImage(imageStringURL: object.hdImageURL!) {
-//                        hdImagesDictionary[currentDate] = bigResolutionImage
-//                        print("HD Image is \(bigResolutionImage)")
-//                    }
-//                }
-                
             }
         }
     }
     let defaults = UserDefaults.standard
     var hdImage = UIImageView()
-    let hdImageScrollView = UIScrollView()
+    let hdImageScrollView: UIScrollView = {
+       let hdImage = UIScrollView()
+        hdImage.contentInsetAdjustmentBehavior = .never
+        hdImage.isHidden = true
+        //hdImageScrollView.layer.backgroundColor = (UIColor.black.cgColor)
+        hdImage.layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
+        hdImage.minimumZoomScale = 1.0
+        hdImage.maximumZoomScale = 5.0
+        return hdImage
+    }()
     let instructionsView = UIView()
     let hdImageView = UIImageView()
     var saveHDImageAfterDownload = false
     var doubleTapRecognizer = UITapGestureRecognizer()
-//    let imagesaver = ImageSaver()
     var photoAlbum: PhotoManager!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInsetAdjustmentBehavior = .never
@@ -159,41 +147,9 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap(gestureRecognizer:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         self.hdImageView.addGestureRecognizer(doubleTapRecognizer)
-//        hdImageScrollView.addGestureRecognizer(doubleTapRecognizer)
         setupScrollView()
-        hdImageScrollView.contentInsetAdjustmentBehavior = .never
-        hdImageScrollView.isHidden = true
+        setupScrollingViews()
         hdImageScrollView.delegate = self
-        //hdImageScrollView.layer.backgroundColor = (UIColor.black.cgColor)
-        hdImageScrollView.layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        self.hdImageScrollView.minimumZoomScale = 1.0
-        self.hdImageScrollView.maximumZoomScale = 5.0
-        
-        let closeButton = UIButton()
-        let imageSaveButton = UIButton()
-        imageSaveButton.layer.cornerRadius = 25
-        closeButton.layer.cornerRadius = 25
-        imageSaveButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        closeButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        hdImageScrollView.addSubview(closeButton)
-        hdImageScrollView.addSubview(imageSaveButton)
-        imageSaveButton.translatesAutoresizingMaskIntoConstraints = false
-        imageSaveButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        imageSaveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        imageSaveButton.bottomAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.bottomAnchor, constant: -35 ).isActive = true
-        imageSaveButton.centerXAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.centerXAnchor, constant: 0 ).isActive = true
-        let saveButtonImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: UIImage.SymbolConfiguration(scale: .large))?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        imageSaveButton.setImage(saveButtonImage, for: .normal)
-        imageSaveButton.addTarget(self, action: #selector(saveImage(sender: )), for: .touchUpInside)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        closeButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        closeButton.topAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.topAnchor, constant: 15 ).isActive = true
-        closeButton.leadingAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.leadingAnchor, constant: 15 ).isActive = true
-
-        let closeButtonImage = UIImage(systemName: "multiply", withConfiguration: UIImage.SymbolConfiguration(scale: .large))?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        closeButton.setImage(closeButtonImage, for: .normal)
-        closeButton.addTarget(self, action: #selector(closehdImageView), for: .touchUpInside)
         setupInstructionsView()
         addingInstructionsView()
         chevronLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
@@ -201,60 +157,14 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         datePicker.maximumDate = today
         initialSetupCollectionView()
         fetchObject(withDate: today)
-        
-        setupScrollingViews()
-        
-   
-        
+
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         updateScrollViewConstraints()
         print(tableView.isScrollEnabled)
-        
-        
     }
-    @objc func dragImg(_ sender: UIPanGestureRecognizer){
-        guard !(sender.view?.frame == self.view.frame) else {return}
-        let translation = sender.translation(in: self.view)
-        hdImageView.center = CGPoint(x: hdImageView.center.x + translation.x, y: hdImageView.center.y + translation.y)
-        sender.setTranslation(CGPoint.zero, in: self.view)
-    }
-    @objc func doubleTap(gestureRecognizer: UITapGestureRecognizer){
-        let scale = min(hdImageScrollView.zoomScale * 2, hdImageScrollView.maximumZoomScale)
-        if scale != hdImageScrollView.zoomScale {
-            let point = gestureRecognizer.location(in: hdImageView)
-            let centerPoint = hdImageView.center
-//            let xOffset = point.x - centerPoint.x
-//            let yOffset = point.y - centerPoint.y
-            let scrollSize = hdImageScrollView.frame.size
-            let size = CGSize(width: scrollSize.width / scale, height: scrollSize.height / scale)
-            let origin = CGPoint(x: point.x - size.width, y: point.y - size.height)
-            hdImageScrollView.zoom(to: CGRect(origin: origin, size: size), animated: true)
-            //hdImageScrollView.zoom(to: CGRect(, animated: <#T##Bool#>)
-        }
-    }
-    @objc func closehdImageView(){
-        isHDImageViewHiden = true
-        hdImageView.image = nil
-        hdImageScrollView.zoomScale = 1.0
-        
-    }
-    @objc func handlePinch(sender: UIPinchGestureRecognizer){
-        guard sender.view != nil else {return}
-        
-        if sender.state == .began || sender.state == .changed {
-            var pinchScale: CGFloat = sender.scale
-
-            if imageViewScale * pinchScale < maxScale && imageViewScale * pinchScale > minScale {
-                imageViewScale *= pinchScale
-                sender.view?.transform = (sender.view?.transform.scaledBy(x: pinchScale, y: pinchScale))!
-            }
-            sender.scale = 1.0
-        }
-        
-    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath {
         case indexPathOfDatePicker:
@@ -268,7 +178,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         case indexPathOfDescription:
             return 300
         default:
-            return 44
+            return UITableView.automaticDimension
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -286,13 +196,13 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             view.addGestureRecognizer(tapGesture)
         }
     }
+    
     // collectionView setup
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         dateArray.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
-        //spinner.startAnimating()
         cell.isUserInteractionEnabled = true
         let date = dateArray[indexPath.row]
         let dayObject = podObjectDictionary[date]
@@ -302,8 +212,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                 cell.ytPlayerView?.load(withVideoId: videoID, playerVars: playVarsDic)
                 cell.ytPlayerView?.isHidden = false
                 spinner.stopAnimating()
-                
-
         }
         } else {
             cell.ytPlayerView?.isHidden = true
@@ -316,30 +224,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                 cell.isUserInteractionEnabled = false
             }
         }
-//        for singleView in cell.subviews {
-//                    if singleView == videoPlayerView {
-//                        singleView.removeFromSuperview()
-//                    }
-//
-//                }
-//        print("Cell subviews count is \(cell.subviews.count)")
-//        if imagesDictionary[date] == nil {
-//            cell.ytPlayerView = nil
-//            cell.imageView.image = UIImage(named: "imagePlaceholder")
-//            if dayObject?.mediaType == "video" {
-//                cell.imageView.image = nil
-//                print("MediaType is Video in Cell")
-//                videoPlayerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-//                if let videoID = dayObject!.imageURL.getVideoID() {
-//                    cell.addSubview(videoPlayerView)
-//                    videoPlayerView.load(withVideoId: videoID, playerVars: playVarsDic)
-//                }
-//            }
-//        } else {
-//            cell.imageView.image = imagesDictionary[date] as? UIImage
-//        }
-        
-        
         return cell
     }
     
@@ -348,9 +232,21 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         return sizeOfTheCell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //hdImageScrollView.isHidden = false
         isHDImageViewHiden = false
+    }
     
+    func addingInstructionsView(){
+        instructionsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(instructionsView)
+        NSLayoutConstraint.activate([
+            instructionsView.topAnchor.constraint(equalTo: view.topAnchor),
+            instructionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            instructionsView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            instructionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            instructionsView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            instructionsView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+        
     }
     func setupInstructionsView(){
         let blureffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
@@ -385,7 +281,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         label.translatesAutoresizingMaskIntoConstraints = false
         blurEffectView.contentView.addSubview(label)
         label.centerXAnchor.constraint(equalTo: blurEffectView.contentView.centerXAnchor, constant: 0).isActive = true
-//        label.bottomAnchor.constraint(greaterThanOrEqualTo: button.topAnchor, constant: -100).isActive = true
         label.bottomAnchor.constraint(lessThanOrEqualTo: button.topAnchor, constant: -150).isActive = true
         label.bottomAnchor.constraint(greaterThanOrEqualTo: button.topAnchor, constant: -100).isActive = true
         label.leadingAnchor.constraint(equalTo: blurEffectView.contentView.leadingAnchor, constant: 100).isActive = true
@@ -420,23 +315,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         arrowRightImageView.topAnchor.constraint(lessThanOrEqualTo: blurEffectView.contentView.topAnchor, constant: 150).isActive = true
 
     }
-    @objc func instructionsButtonTapped(){
-        instructionsView.isHidden = true
-        saveUserDefaults()
-    }
-    func addingInstructionsView(){
-        instructionsView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(instructionsView)
-        NSLayoutConstraint.activate([
-            instructionsView.topAnchor.constraint(equalTo: view.topAnchor),
-            instructionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            instructionsView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            instructionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            instructionsView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            instructionsView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        
-    }
     func setupScrollView(){
         hdImageScrollView.translatesAutoresizingMaskIntoConstraints = false
         hdImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -445,45 +323,60 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         hdImageView.contentMode = .scaleAspectFit
         hdImageView.isUserInteractionEnabled = true
         hdImageView.addSubview(saveSpiner)
-        saveSpiner.translatesAutoresizingMaskIntoConstraints = false
-//        hdImageScrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        hdImageScrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        //hdImageScrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        
     }
     func updateScrollViewConstraints(){
         let safeAreaEdgeInsets = view.safeAreaInsets
         hdImageScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,  constant: safeAreaEdgeInsets.bottom).isActive = true
         hdImageScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         hdImageScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        //hdImageScrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         hdImageScrollView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
         
         hdImageView.centerXAnchor.constraint(equalTo: hdImageScrollView.centerXAnchor).isActive = true
         hdImageView.widthAnchor.constraint(equalTo: hdImageScrollView.widthAnchor).isActive = true
         hdImageView.topAnchor.constraint(equalTo: hdImageScrollView.topAnchor).isActive = true
         hdImageView.bottomAnchor.constraint(equalTo: hdImageScrollView.bottomAnchor).isActive = true
         hdImageView.centerYAnchor.constraint(equalTo: hdImageScrollView.centerYAnchor).isActive = true
-        
+        saveSpiner.translatesAutoresizingMaskIntoConstraints = false
         saveSpiner.centerXAnchor.constraint(equalTo: hdImageView.centerXAnchor).isActive = true
         saveSpiner.centerYAnchor.constraint(equalTo: hdImageView.centerYAnchor).isActive = true
     }
     func setupScrollingViews(){
+        let closeButton = UIButton()
+        closeButton.layer.cornerRadius = 25
+        closeButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        hdImageScrollView.addSubview(closeButton)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        closeButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        closeButton.topAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.topAnchor, constant: 25 ).isActive = true
+        closeButton.leadingAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.leadingAnchor, constant: 15 ).isActive = true
+
+        let closeButtonImage = UIImage(systemName: "multiply", withConfiguration: UIImage.SymbolConfiguration(scale: .large))?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        closeButton.setImage(closeButtonImage, for: .normal)
+        closeButton.addTarget(self, action: #selector(closehdImageView), for: .touchUpInside)
+        let imageSaveButton = UIButton()
+        imageSaveButton.layer.cornerRadius = 25
+        imageSaveButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        hdImageScrollView.addSubview(imageSaveButton)
+        imageSaveButton.translatesAutoresizingMaskIntoConstraints = false
+        imageSaveButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        imageSaveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        imageSaveButton.bottomAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.bottomAnchor, constant: -35 ).isActive = true
+        imageSaveButton.centerXAnchor.constraint(equalTo: hdImageScrollView.frameLayoutGuide.centerXAnchor, constant: 0 ).isActive = true
+        let saveButtonImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: UIImage.SymbolConfiguration(scale: .large))?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        imageSaveButton.setImage(saveButtonImage, for: .normal)
+        imageSaveButton.addTarget(self, action: #selector(saveImage(sender: )), for: .touchUpInside)
        
     }
     override func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.hdImageView
     }
     func fetchObject(withDate date: Date){
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         request.fetchNASAPOD(date: date) { object in
             if let object = object {
                 DispatchQueue.main.async {
                     self.updateTableView(with: object)
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
-                
                 self.podObjectDictionary[date] = object
                 if object.mediaType == "video" {
                     DispatchQueue.main.async {
@@ -495,20 +388,7 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             }
         }
     }
-    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
-        switch state {
-        case .buffering:
-            print("Buffering")
-        case .ended:
-            print("Ended")
-        case .unknown:
-            print("unknowon")
-        case .unstarted:
-            print("unstarted")
-        default:
-            break
-        }
-    }
+
     func initialSetupCollectionView(){
         dateArray.removeAll()
         var date: Date!
@@ -533,18 +413,13 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             }
         }
         imagesCollectionView.reloadData()
-       
-
-
-        
     }
     func setContentOffset(){
         let itemsCount = CGFloat((imagesCollectionView?.numberOfItems(inSection: 0))!)
-        imagesCollectionView.setContentOffset(CGPoint(x: (imagesCollectionView.collectionViewLayout.collectionViewContentSize.width*4)/itemsCount*4, y: 0), animated: false)
+        imagesCollectionView.setContentOffset(CGPoint(x: (imagesCollectionView.collectionViewLayout.collectionViewContentSize.width)/itemsCount*4, y: 0), animated: false)
     }
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         let visibleCell = imagesCollectionView.cellForItem(at: indexPathForVisibleCell!) as? ImageCollectionViewCell
         currentDate = dateArray[indexPathOfVisibleCell.row]
         print(currentDate)
@@ -573,7 +448,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
             let itemSize = CGSize(width: scrollView.bounds.width, height: scrollView.bounds.height)
             let newOffset: CGPoint = CGPoint(x: itemSize.width * 8, y: 0)
             self.imagesCollectionView.setContentOffset(newOffset, animated: false)
-            
         }
         
     }
@@ -585,7 +459,6 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         tableView.endUpdates()
         }
     }
-
     func updateTableView(with object: PODObject){
         imageName.text = object.title
         imageDescription.text = object.description
@@ -635,24 +508,41 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         guard imagesCollectionView != nil else {return}
         let offset = imagesCollectionView.contentOffset
         let width = imagesCollectionView.bounds.size.width
-        print("Offset is \(offset)")
-        print("Width is \(width)")
-        print("NewSize is \(size)")
-        print("New calculated size is \(size.width - view.safeAreaInsets.top*2)")
         let index = round(offset.x/width)
         let newOffset: CGPoint = CGPoint(x: index*(size.width), y: offset.y)
-        let newPortretOffset: CGPoint = CGPoint(x: index*(size.width - view.safeAreaInsets.top*2), y: offset.y)
-        print("NewOffset is \(newPortretOffset)")
-        let newLandscapeOffset: CGPoint = CGPoint(x: index*(size.width - view.safeAreaInsets.left*2), y: offset.y)
-        print("Inset is \(view.safeAreaInsets)")
-        print("Is device in landscape mode \(UIDevice.current.orientation.isLandscape)")
         coordinator.animate ( alongsideTransition:  {(context) in
             self.imagesCollectionView.reloadData()
             self.imagesCollectionView.setContentOffset(newOffset, animated:  false)
             
         }, completion: nil)
-        
 
+    }
+
+    func loadUserDefaults(){
+        instructionsView.isHidden = defaults.object(forKey: "instructionsViewHidden") as? Bool ?? false
+    }
+    func saveUserDefaults(){
+        defaults.setValue(instructionsView.isHidden, forKey: "instructionsViewHidden")
+    }
+    func creatingPhotoAlbum(){
+            photoAlbum = PhotoManager(albumName: "APOD pictures")
+
+        }
+    func updateTableViewScrollEnable(){
+        guard isHDImageViewHiden else {
+            tableView.isScrollEnabled = false
+            return
+        }
+        tableView.isScrollEnabled = (UIScreen.main.bounds.width > UIScreen.main.bounds.height) ? true : false
+    }
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard indexPathForVisibleCell != nil else {return}
+        for index in 0...dateArray.count {
+            let indexPath = IndexPath(row: index, section: 0)
+            let cellOfImagesCollectionView = imagesCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
+            cellOfImagesCollectionView?.ytPlayerView?.pauseVideo()
+        }
+       updateTableViewScrollEnable()
     }
     @objc func tapFunction(){
         isDatePickerHidden = true
@@ -660,19 +550,12 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
         tableView.beginUpdates()
         tableView.endUpdates()
     }
-    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
-        playerView.playVideo()
-    }
     @objc func saveImage(sender: UIButton){
         let alertController = UIAlertController(title: "", message: nil, preferredStyle: .actionSheet)
         let text = "Збереження"
         let titleString = NSMutableAttributedString(string: text)
-        let range = (titleString.string as NSString).range(of: text)
         titleString.addAttributes([NSAttributedString.Key.foregroundColor : UIColor.white], range: NSMakeRange(0, text.count))
-//        let titleString = NSAttributedString(string: "Збереження", attributes: [.strokeWidth : -3.0, .strokeColor : UIColor.white, .font : UIFont(name: "Helvetica", size: 15.0), .foregroundColor : UIColor.white])
-        
         alertController.setValue(titleString, forKey: "attributedTitle")
-        
         let cancelAction = UIAlertAction(title: "Відмінити", style: .cancel, handler: {_ in
             UIView.animate(withDuration: 0.2) {
                 sender.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -705,48 +588,31 @@ class MainTableViewController: UITableViewController, UICollectionViewDelegate, 
                 print("Error saving HD image to the Photo Album!")
             }
         })
-        let subview = (alertController.view.subviews.first?.subviews.first?.subviews.first!)! as UIView
-        //subview.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        //imageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
-        //hdImageSavingAction.setValue(UIColor.white, forKey: "titleTextColor")
         alertController.addAction(cancelAction)
         alertController.addAction(imageSavingAction)
         alertController.addAction(hdImageSavingAction)
-        
-//        alertController.popoverPresentationController?.sourceView = sender
         present(alertController, animated: true, completion: nil)
         UIView.animate(withDuration: 0.2) {
             sender.transform = CGAffineTransform(translationX: 0, y: 150)
         }
-//        imagesaver.writeToPhotoAlbum(image: imagesDictionary[currentDate]!)
-        
-        
     }
-    func loadUserDefaults(){
-        instructionsView.isHidden = defaults.object(forKey: "instructionsViewHidden") as? Bool ?? false
-    }
-    func saveUserDefaults(){
-        defaults.setValue(instructionsView.isHidden, forKey: "instructionsViewHidden")
-    }
-    func creatingPhotoAlbum(){
-            photoAlbum = PhotoManager(albumName: "APOD pictures")
-
+    @objc func doubleTap(gestureRecognizer: UITapGestureRecognizer){
+        let scale = min(hdImageScrollView.zoomScale * 2, hdImageScrollView.maximumZoomScale)
+        if scale != hdImageScrollView.zoomScale {
+            let point = gestureRecognizer.location(in: hdImageView)
+            let scrollSize = hdImageScrollView.frame.size
+            let size = CGSize(width: scrollSize.width / scale, height: scrollSize.height / scale)
+            let origin = CGPoint(x: point.x - size.width, y: point.y - size.height)
+            hdImageScrollView.zoom(to: CGRect(origin: origin, size: size), animated: true)
         }
-    func updateTableViewScrollEnable(){
-        guard isHDImageViewHiden else {
-            tableView.isScrollEnabled = false
-            return
-        }
-        tableView.isScrollEnabled = (UIScreen.main.bounds.width > UIScreen.main.bounds.height) ? true : false
     }
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        guard let indexPathOfVisibleCell = indexPathForVisibleCell else {return}
-        for index in 0...dateArray.count {
-            let indexPath = IndexPath(row: index, section: 0)
-            let cellOfImagesCollectionView = imagesCollectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
-            cellOfImagesCollectionView?.ytPlayerView?.pauseVideo()
-        }
-       updateTableViewScrollEnable()
-        
+    @objc func closehdImageView(){
+        isHDImageViewHiden = true
+        hdImageView.image = nil
+        hdImageScrollView.zoomScale = 1.0
+    }
+    @objc func instructionsButtonTapped(){
+        instructionsView.isHidden = true
+        saveUserDefaults()
     }
 }

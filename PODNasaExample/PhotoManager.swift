@@ -48,8 +48,6 @@ class PhotoManager {
             let albumChangeRequest = PHAssetCollectionChangeRequest(for: album)
             let enumeration = NSArray(object: placeholder)
             albumChangeRequest?.addAssets(enumeration)
-            print("Local Identifier is \(placeholder.localIdentifier)")
-            
         }
     }, completionHandler: { (result, error) in
         completion(result, error)
